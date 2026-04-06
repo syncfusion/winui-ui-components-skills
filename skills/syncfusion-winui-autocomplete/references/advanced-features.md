@@ -388,35 +388,6 @@ Test control in Windows high contrast modes:
 3. Ensure focus indicators are visible
 4. Check that interactive elements are distinguishable
 
-### Accessibility Checklist
-
-- [ ] PlaceholderText provides clear guidance
-- [ ] AutomationProperties.Name is descriptive
-- [ ] AutomationProperties.HelpText explains purpose
-- [ ] Color contrast meets WCAG standards (4.5:1)
-- [ ] Focus indicators are clearly visible
-- [ ] All features work with keyboard only
-- [ ] Screen reader announces changes correctly
-- [ ] Works in high contrast mode
-- [ ] NoResultsFoundContent provides helpful feedback
-- [ ] Error states are announced properly
-
-### Testing with Screen Readers
-
-**Windows Narrator:**
-1. Press Windows+Ctrl+Enter to start Narrator
-2. Tab to AutoComplete control
-3. Verify control purpose is announced
-4. Type to filter → Verify suggestion count announced
-5. Use arrows → Verify item names announced
-6. Press Enter → Verify selection announced
-
-**NVDA/JAWS:**
-- Test with professional screen readers
-- Verify custom templates are accessible
-- Ensure group headers are announced
-- Check token announcements in multiple mode
-
 ## Common Advanced Patterns
 
 ### Pattern 1: Grouped Suggestions

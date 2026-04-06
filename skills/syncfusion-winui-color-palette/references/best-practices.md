@@ -43,19 +43,6 @@
 ✅ **Any color must be selectable** — Design/creative tools
 ✅ **Hex code input/output is primary** — Developer tools, design systems
 
-### Decision Matrix
-
-| Scenario | SfColorPalette | SfColorPicker |
-|----------|:--------------:|:-------------:|
-| Document text color | ✅ | ❌ |
-| Theme color picker | ✅ | ❌ |
-| Drawing tool pen color | ✅ | ⚠️ |
-| Gradient background editor | ❌ | ✅ |
-| Brand color enforcer | ✅ | ❌ |
-| Design tool (any color) | ⚠️ | ✅ |
-| Hex code input | ❌ | ✅ |
-| Simple toolbar dropdown | ✅ | ❌ |
-
 ## Common Use Cases
 
 ### Use Case 1: Document Text Color Picker

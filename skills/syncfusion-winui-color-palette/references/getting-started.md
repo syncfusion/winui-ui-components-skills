@@ -35,7 +35,7 @@ Install-Package Syncfusion.Editors.WinUI
 **Using .csproj file:**
 ```xml
 <ItemGroup>
-    <PackageReference Include="Syncfusion.Editors.WinUI" Version="25.1.35" />
+    <PackageReference Include="Syncfusion.Editors.WinUI" Version="*" />
 </ItemGroup>
 ```
 
@@ -269,12 +269,6 @@ The SfColorPalette visual layout includes:
 
 ### Issue: Build Errors After Adding NuGet
 **Solution:** Clean and rebuild the solution. Ensure NuGet packages are fully restored.
-
-### Issue: License Warning at Runtime
-**Solution:** Register your Syncfusion license key in `App.xaml.cs`:
-```csharp
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR_LICENSE_KEY");
-```
 
 ### Issue: SelectedBrush Not Updating Target
 **Solution:** Ensure the binding mode is correct, or wire the `SelectedBrushChanged` event and apply manually.

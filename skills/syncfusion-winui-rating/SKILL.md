@@ -64,7 +64,7 @@ Use the Rating control when you need to:
 - Examples demonstrating each precision type
 
 ### Customization Options
-📄 **Read:** [references/customization.md](references/customization.md)
+📄 **Read:** [references/customization.md](references/customization.md) [references/customization-advanced.md](references/customization-advanced.md)
 - Styling rated and unrated items (RatedItemStyle, UnratedItemStyle)
 - Controlling item size (ItemSize property)
 - Changing orientation (horizontal or vertical)
@@ -86,7 +86,7 @@ Use the Rating control when you need to:
 - Complete heart rating implementation
 
 ### Tooltip Features
-📄 **Read:** [references/tooltip-features.md](references/tooltip-features.md)
+📄 **Read:** [references/tooltip-features.md](references/tooltip-features.md) [references/tooltip-customization.md](references/tooltip-customization.md)
 - Enabling tooltips on hover (EnableToolTip property)
 - Formatting tooltip content (ToolTipFormat property)
 - Using standard numeric format strings
@@ -387,14 +387,6 @@ private void Rating_ValueChanged(object sender, ValueChangedEventArgs e)
     Debug.WriteLine($"Rating changed from {oldValue} to {newValue}");
 }
 ```
-
-## Related Components
-
-- **Slider** - Alternative numeric input for continuous values
-- **ComboBox** - Alternative for discrete choices
-- **CheckBox** - For binary feedback (like/dislike)
-- **TextBox** - For detailed written reviews
-
 ---
 
 **Need more details?** Read the reference files linked in the Navigation Guide above for comprehensive documentation and examples.

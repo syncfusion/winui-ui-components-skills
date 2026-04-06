@@ -441,25 +441,3 @@ colorPicker.IsHexInputVisible = true;
     AlphaInputOptions="All"
     ColorEditorsVisibilityMode="Inline" />
 ```
-
-## Edge Cases and Gotchas
-
-### Issue 1: Alpha Not Updating Visual
-**Problem:** Changing alpha doesn't affect visible elements.
-**Solution:** Ensure the target element supports transparency (e.g., Rectangle, Border) and isn't behind opaque backgrounds.
-
-### Issue 2: Hex Input Not Accepting Values
-**Problem:** Hex editor rejects valid hex codes.
-**Solution:** Ensure format is correct: `#RRGGBB` or `#AARRGGBB` (include the # symbol).
-
-### Issue 3: Color Channel Values Clamped
-**Problem:** Entering values outside range doesn't work.
-**Solution:** Values are automatically clamped to valid ranges (RGB: 0-255, HSV/HSL: 0-359° hue, 0-100% saturation/value).
-
-### Issue 4: Event Firing Multiple Times
-**Problem:** SelectedBrushChanged fires repeatedly during dragging.
-**Solution:** This is by design for real-time updates. If needed, debounce the event handler or only act on the final value.
-
-### Issue 5: Color Model Conversion Precision
-**Problem:** Converting between color models (RGB ↔ HSV ↔ CMYK) may have slight precision differences.
-**Solution:** This is expected due to mathematical rounding. Stick to one color model when precision is critical.

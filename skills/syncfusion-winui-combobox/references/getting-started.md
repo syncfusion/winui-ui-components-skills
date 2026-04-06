@@ -2,12 +2,6 @@
 
 This guide covers the installation, basic setup, and fundamental usage patterns for the Syncfusion WinUI ComboBox control.
 
-## Prerequisites
-
-- **WinUI 3 desktop app** for C# and .NET 8.0 or later (latest: .NET 10.0 recommended)
-- **Visual Studio 2019** or later with WinUI workload
-- **.NET 8.0 SDK** or later (latest: .NET 10.0 recommended)
-
 ## Installation
 
 ### Step 1: Install NuGet Package
@@ -26,7 +20,7 @@ Install-Package Syncfusion.Editors.WinUI
 
 **Package Reference (.csproj):**
 ```xml
-<PackageReference Include="Syncfusion.Editors.WinUI" Version="24.2.3" />
+<PackageReference Include="Syncfusion.Editors.WinUI" Version="*" />
 ```
 
 ### Step 2: Register Syncfusion License

@@ -2,14 +2,6 @@
 
 This guide covers the installation, setup, and basic implementation of the Syncfusion WinUI Badge control (`SfBadge`).
 
-## Prerequisites
-
-Before implementing the Badge control, ensure you have:
-- **Visual Studio 2019 or later** with WinUI 3 development tools
-- **.NET 5 or later** SDK installed
-- **WinUI 3 desktop application** project created
-- Basic knowledge of XAML and C#
-
 ## Installation
 
 ### Step 1: Create WinUI 3 Desktop Application

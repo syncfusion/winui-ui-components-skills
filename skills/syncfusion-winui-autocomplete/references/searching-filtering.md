@@ -349,46 +349,6 @@ public class MultiFieldFilter : IAutoCompleteFilterBehavior
 
 **Use for:** Search across multiple properties (name, ID, department, etc.)
 
-### Pattern 4: Remote Data Search
-
-```csharp
-public class ApiSearchFilter : IAutoCompleteFilterBehavior
-{
-    private CancellationTokenSource cancellationTokenSource;
-    private HttpClient httpClient = new HttpClient();
-
-    public async Task<object> GetMatchingItemsAsync(
-        SfAutoComplete source, 
-        AutoCompleteFilterInfo filterInfo)
-    {
-        if (cancellationTokenSource != null)
-        {
-            cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
-        }
-
-        cancellationTokenSource = new CancellationTokenSource();
-        
-        try
-        {
-            // Call API with search query
-            var response = await httpClient.GetAsync(
-                $"https://api.example.com/search?q={filterInfo.Text}",
-                cancellationTokenSource.Token);
-            
-            var results = await response.Content.ReadAsAsync<List<SearchResult>>();
-            return results;
-        }
-        catch (TaskCanceledException)
-        {
-            return new List<SearchResult>();
-        }
-    }
-}
-```
-
-**Use for:** Large databases, remote APIs, dynamic data sources
-
 ## Performance Tips
 
 **For large datasets (1000+ items):**

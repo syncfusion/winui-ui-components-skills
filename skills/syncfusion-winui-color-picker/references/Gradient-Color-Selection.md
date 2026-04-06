@@ -510,25 +510,3 @@ colorPicker.SelectedBrush = spotlight;
     AxisInputOption="Simple"
     x:Name="colorPicker" />
 ```
-
-## Edge Cases and Gotchas
-
-### Issue 1: Minimum Gradient Stops
-**Problem:** Cannot delete below 2 gradient stops.
-**Solution:** Linear and radial gradients require at least 2 stops to define a gradient.
-
-### Issue 2: Gradient Not Rendering
-**Problem:** Gradient appears as solid color or doesn't show.
-**Solution:** Verify StartPoint ≠ EndPoint for linear gradients, and RadiusX/RadiusY > 0 for radial gradients.
-
-### Issue 3: Gradient Stops Out of Order
-**Problem:** Colors don't blend as expected.
-**Solution:** Ensure gradient stop offsets are in ascending order (0.0 → 1.0). The control typically handles this automatically.
-
-### Issue 4: Performance with Many Stops
-**Problem:** Sluggish UI with 10+ gradient stops.
-**Solution:** Limit gradient stops to 6-8 for optimal performance. More stops increase rendering complexity.
-
-### Issue 5: Radial Gradient Appears Elliptical
-**Problem:** Circular gradient looks stretched.
-**Solution:** Ensure RadiusX = RadiusY for perfect circles, or adjust for the aspect ratio of the target element.

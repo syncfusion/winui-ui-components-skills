@@ -35,7 +35,7 @@ Install-Package Syncfusion.Editors.WinUI
 **Using .csproj file:**
 ```xml
 <ItemGroup>
-    <PackageReference Include="Syncfusion.Editors.WinUI" Version="25.1.35" />
+    <PackageReference Include="Syncfusion.Editors.WinUI" Version="*" />
 </ItemGroup>
 ```
 

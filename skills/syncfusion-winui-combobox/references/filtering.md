@@ -19,6 +19,25 @@ The WinUI ComboBox provides built-in filtering functionality that dynamically fi
 - **TextSearchMode:** Filter algorithm (`StartsWith` or `Contains`)
 - **FilterBehavior:** Custom filtering logic
 
+## ⚠️ Security Notice: Third-Party Content Exposure
+
+When implementing custom filtering or data binding in ComboBox, be aware of security risks related to external content:
+
+**Critical Security Practices:**
+- ✅ **Only use trusted internal data sources** for ItemsSource
+- ✅ **Validate all external data** before displaying in the ComboBox
+- ✅ **Use embedded resources or local files** for images (`ms-appx:///` or `file:///`)
+- ✅ **Never bind directly to external URLs** without validation (e.g., PhotoUrl, IconUrl from untrusted sources)
+- ✅ **Implement custom FilterBehavior carefully** - ensure filtering logic doesn't enable injection attacks
+- ✅ **Sanitize user input** in custom filter implementations
+- ✅ **Use whitelisting** for allowed data sources if external APIs must be used
+
+**What NOT to Do:**
+- ❌ Don't bind `Image.Source="{Binding IconUrl}"` to untrusted external URLs
+- ❌ Don't fetch data from arbitrary APIs without validation
+- ❌ Don't pass unsanitized user input directly to external services
+- ❌ Don't display unvalidated third-party content in filtered results
+
 ## Enable Filtering
 
 Filtering requires both `IsFilteringEnabled` and `IsEditable` set to `true`.
@@ -187,6 +206,8 @@ Implement custom filtering logic for complex scenarios like:
 - Fuzzy matching
 - Special sorting of results
 - Filtering based on complex criteria
+
+**⚠️ Security Warning:** When implementing custom filtering with external data sources (APIs, databases), always validate and sanitize data before returning filtered results. Never trust untrusted third-party data.
 
 ### Step 1: Create Custom Filter Behavior Class
 
@@ -524,6 +545,9 @@ public class MinLengthFilterBehavior : IComboBoxFilterBehavior
 
 ### Scenario 2: Searchable Dropdown with Icons
 
+⚠️ **Security Notice:** When binding images to external URLs, always validate and load only from trusted internal sources. Binding to untrusted external URLs (IconUrl, PhotoUrl, etc.) can expose the application to third-party content injection risks.
+
+**Secure Pattern:**
 ```xaml
 <editors:SfComboBox IsEditable="True"
                     IsFilteringEnabled="True"
@@ -533,6 +557,7 @@ public class MinLengthFilterBehavior : IComboBoxFilterBehavior
     <editors:SfComboBox.ItemTemplate>
         <DataTemplate>
             <StackPanel Orientation="Horizontal">
+                <!-- IMPORTANT: Only load images from trusted internal sources -->
                 <Image Source="{Binding IconUrl}" 
                        Width="24" Height="24"
                        Margin="0,0,8,0" />
@@ -544,21 +569,32 @@ public class MinLengthFilterBehavior : IComboBoxFilterBehavior
 </editors:SfComboBox>
 ```
 
-### Scenario 3: Real-Time API Search
-
+**Recommended Implementation:**
 ```csharp
-public class ApiSearchFilterBehavior : IComboBoxFilterBehavior
+// ✅ SECURE: Use embedded resources or local files
+public class App
 {
-    private readonly ISearchService _searchService;
+    public string Name { get; set; }
     
-    public List<int> GetMatchingIndexes(SfComboBox source, ComboBoxFilterInfo filterInfo)
+    // Use relative paths to embedded images
+    public string IconUrl { get; set; } // e.g., "ms-appx:///Assets/Icons/app.png"
+}
+
+// ✅ SECURE: Validate URLs if loading from data
+public class SecureAppLoader
+{
+    private static readonly Uri[] AllowedImageDomains = new[]
     {
-        // Note: This is synchronous - consider async patterns in production
-        var results = _searchService.SearchAsync(filterInfo.Text).Result;
+        new Uri("ms-appx:///"), // Embedded resources
+        new Uri("file:///"),    // Local files
+    };
+    
+    public static bool IsImageUrlAllowed(string urlString)
+    {
+        if (!Uri.TryCreate(urlString, UriKind.Absolute, out var uri))
+            return false;
         
-        // Update ItemsSource with API results
-        // Then return indices
-        return Enumerable.Range(0, results.Count).ToList();
+        return AllowedImageDomains.Any(domain => uri.AbsoluteUri.StartsWith(domain.AbsoluteUri));
     }
 }
 ```

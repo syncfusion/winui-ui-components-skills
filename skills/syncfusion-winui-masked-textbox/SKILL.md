@@ -103,7 +103,12 @@ SfMaskedTextBox
 - CustomErrorIcon property
 - CustomErrorBorderBrush property
 - ErrorContent property for tooltip messages
-- Validation scenarios
+
+📄 **Read:** [references/error-indication-validation.md](references/error-indication-validation.md)
+- Dynamic validation using ValueChanged event
+- Validation scenarios (required fields, real-time, multi-field, date range)
+- Clearing error state
+- Complete form validation example
 
 ### Customization
 
@@ -119,11 +124,16 @@ SfMaskedTextBox
 
 📄 **Read:** [references/events.md](references/events.md)
 - ValueChanging event (before change)
-- ValueChanged event (after change)
 - Event arguments and properties
-- Validation with events
-- Real-time feedback
-- Canceling input changes
+- Preventing invalid input with Cancel
+- Real-time character filtering
+- Conditional input rules
+
+📄 **Read:** [references/events-valuechanged.md](references/events-valuechanged.md)
+- ValueChanged event (after change)
+- Combining ValueChanging and ValueChanged
+- Validation scenarios (required fields, cross-field, async, date range)
+- Complete contact form example
 
 ## Quick Start Example
 
@@ -288,10 +298,3 @@ Use regex patterns that adapt to different locale requirements for phone numbers
 - Verify property is set in XAML or code
 - Check control height allows space for header/description
 - Ensure HeaderTemplate syntax is correct if customizing
-
----
-
-**Related Skills:**
-- Parent Library: [implementing-syncfusion-winui-components](../../)
-- WinUI Editors: Coming soon
-- WinUI Data Validation: Coming soon

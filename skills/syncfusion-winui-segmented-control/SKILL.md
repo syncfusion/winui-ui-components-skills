@@ -50,13 +50,16 @@ Use this skill when the user needs to:
 ### Selection Features
 📄 **Read:** [references/selection.md](references/selection.md)
 - SelectedIndex property for programmatic selection
+- SelectedItem property and two-way binding
+- SelectionChanged event with NewValue and OldValue
+- Handling selection programmatically (by index, by item, cycling)
+
+📄 **Read:** [references/selection-styling.md](references/selection-styling.md)
 - SelectedSegmentStyle customization
 - Shadow effects on selected items (HasShadow, ShadowColor)
-- Selection animations (Slide vs None)
-- SelectionAnimationType property
+- Selection animations (Slide vs None) and SelectionAnimationType property
 - Keyboard navigation (Arrow keys, Tab, Enter)
-- SelectionChanged event with NewValue and OldValue
-- Handling selection programmatically
+- Best practices for selection
 
 ### Disabling Items
 📄 **Read:** [references/disable-items.md](references/disable-items.md)
@@ -74,8 +77,14 @@ Use this skill when the user needs to:
 - ItemContainerStyle for per-item styling
 - ItemTemplateSelector for conditional templates
 - ItemContainerStyleSelector for conditional styles
-- Custom templates (ellipse, circle, image+text, top indicator)
-- Advanced styling patterns
+- Best practices for UI styling
+
+📄 **Read:** [references/custom-templates.md](references/custom-templates.md)
+- Ellipse (pill) style template
+- Circle color-swatch style template
+- Image with text stacked layout template
+- Top indicator (tab-bar) style template
+- Gradient background template
 
 ### Theme Support
 📄 **Read:** [references/themes.md](references/themes.md)
@@ -321,7 +330,9 @@ segmentedControl.SetItemEnabled(3, false); // Disable "Enterprise" option
 ## Related Documentation
 
 - **Getting Started:** See [references/getting-started.md](references/getting-started.md) for setup and basic usage
-- **Selection:** See [references/selection.md](references/selection.md) for selection features and events
+- **Selection Properties & Events:** See [references/selection.md](references/selection.md) for SelectedIndex, SelectedItem, SelectionChanged, and programmatic selection
+- **Selection Styling & Keyboard:** See [references/selection-styling.md](references/selection-styling.md) for SelectedSegmentStyle, shadows, animations, keyboard navigation, and best practices
 - **Disable Items:** See [references/disable-items.md](references/disable-items.md) for conditional segment disabling
-- **UI Customization:** See [references/ui-customization.md](references/ui-customization.md) for styling and templates
+- **UI Customization:** See [references/ui-customization.md](references/ui-customization.md) for borders, corners, selectors, and best practices
+- **Custom Templates:** See [references/custom-templates.md](references/custom-templates.md) for ellipse, circle, image+text, top indicator, and gradient templates
 - **Themes:** See [references/themes.md](references/themes.md) for theme support and customization keys

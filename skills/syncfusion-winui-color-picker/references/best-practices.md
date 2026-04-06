@@ -66,19 +66,6 @@
     AxisInputOption="Simple" />
 ```
 
-### Decision Matrix
-
-| Scenario | Solid | Linear | Radial |
-|----------|-------|--------|--------|
-| Theme color picker | ✅ | ❌ | ❌ |
-| Text color selector | ✅ | ❌ | ❌ |
-| Background designer | ❌ | ✅ | ✅ |
-| Button gradient effect | ❌ | ✅ | ⚠️ |
-| Spotlight effect | ❌ | ❌ | ✅ |
-| Simple border color | ✅ | ❌ | ❌ |
-| Header gradient | ❌ | ✅ | ❌ |
-| Logo color | ✅ | ❌ | ❌ |
-
 ## Performance Considerations
 
 ### Solid Color Performance

@@ -331,13 +331,6 @@ shadow.EnableShadow = true;  // Enable shadow
 - Use EnableShadow to conditionally show shadows
 - Consider virtualization for lists with shadowed items
 
-## Related Components
-
-- **Border** - Combine with SfShadow for card-like containers
-- **Button** - Common target for shadow effects
-- **Image** - Apply shadows to photos and icons
-- **Shapes/Paths** - Create custom shadowed graphics
-
 ---
 
 **Need more details?** Read the reference files linked in the Navigation Guide above for comprehensive documentation and examples.

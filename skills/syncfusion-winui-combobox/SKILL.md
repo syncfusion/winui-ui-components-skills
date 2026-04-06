@@ -34,6 +34,14 @@ The **Syncfusion WinUI ComboBox** (`SfComboBox`) is a feature-rich dropdown sele
 - **Keyboard Support:** Full keyboard navigation and shortcuts
 - **Accessibility:** WCAG compliant with screen reader support
 
+## ⚠️ Security Considerations
+
+When using ComboBox with external data sources or custom filtering:
+- **Data Source Security:** Only bind ItemsSource to trusted internal data sources. Validate any external data before displaying.
+- **Image Binding:** Do not bind `Image.Source` to untrusted external URLs. Use embedded resources (`ms-appx:///`) or local files (`file:///`) instead.
+- **Custom Filtering:** If implementing `IComboBoxFilterBehavior` with external APIs, always whitelist allowed domains and sanitize responses.
+- **User Input:** In editable mode, validate and sanitize user input, especially if passed to backend services.
+
 **When to use ComboBox vs. other dropdowns:**
 - **Use ComboBox when:** You need filtering, editing, or multiple selection with tokens
 - **Use DropDownList when:** You need simple single-selection without editing
@@ -438,6 +446,8 @@ Multi-select with token display for selecting multiple tags:
 ### Use Case 3: Searchable Employee Directory
 Editable dropdown with filtering for quick employee lookup:
 
+⚠️ **Security Note:** When displaying employee photos or external images, ensure images are loaded from trusted internal sources only. Do not bind to external URLs without validation.
+
 ```xaml
 <editors:SfComboBox IsEditable="True"
                     IsFilteringEnabled="True"
@@ -453,6 +463,7 @@ Editable dropdown with filtering for quick employee lookup:
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <!-- IMPORTANT: Only use internal/trusted image sources -->
                 <Ellipse Width="32" Height="32" Margin="8">
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="{Binding PhotoUrl}" />
