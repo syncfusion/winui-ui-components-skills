@@ -327,67 +327,6 @@ series.EndAngle = 90;  // 90-degree quarter circle
 <chart:PieSeries StartAngle="0" EndAngle="180"/>
 ```
 
-## Combination Charts
-
-Display multiple series types together by adding both PieSeries and DoughnutSeries to the same chart.
-
-### Pie Inside Doughnut
-
-**XAML:**
-```xml
-<chart:SfCircularChart>
-    <chart:SfCircularChart.Series>
-        <!-- Outer doughnut -->
-        <chart:DoughnutSeries ItemsSource="{Binding OuterData}"
-                            XBindingPath="Demand"
-                            YBindingPath="Year2010"
-                            InnerRadius="0.7"/>
-        
-        <!-- Inner pie -->
-        <chart:PieSeries ItemsSource="{Binding InnerData}"
-                       XBindingPath="Demand"
-                       YBindingPath="Year2011"
-                       Radius="0.5"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
-
-**C#:**
-```csharp
-SfCircularChart chart = new SfCircularChart();
-
-// Outer doughnut series
-DoughnutSeries outerSeries = new DoughnutSeries();
-outerSeries.SetBinding(DoughnutSeries.ItemsSourceProperty, 
-    new Binding() { Path = new PropertyPath("OuterData") });
-outerSeries.XBindingPath = "Demand";
-outerSeries.YBindingPath = "Year2010";
-outerSeries.InnerRadius = 0.7;
-
-// Inner pie series
-PieSeries innerSeries = new PieSeries();
-innerSeries.SetBinding(PieSeries.ItemsSourceProperty, 
-    new Binding() { Path = new PropertyPath("InnerData") });
-innerSeries.XBindingPath = "Demand";
-innerSeries.YBindingPath = "Year2011";
-innerSeries.Radius = 0.5;
-
-chart.Series.Add(outerSeries);
-chart.Series.Add(innerSeries);
-```
-
-### Sizing Guidelines for Combination
-
-**For Pie inside Doughnut:**
-- Outer DoughnutSeries: `InnerRadius="0.7"` (or higher)
-- Inner PieSeries: `Radius="0.5"` or less
-
-**Example with good spacing:**
-```xml
-<chart:DoughnutSeries InnerRadius="0.75" Radius="0.95"/>
-<chart:PieSeries Radius="0.45"/>
-```
-
 ### Multiple Pie Series (Not Recommended)
 
 While technically possible, overlapping multiple pie series is not recommended. Use multiple doughnut series instead for better visualization.
@@ -414,13 +353,6 @@ While technically possible, overlapping multiple pie series is not recommended. 
 1. **Optimize data** - Don't bind thousands of items
 2. **Use grouping** - Reduce number of visible segments
 3. **Avoid animations** - On large datasets
-
-### Accessibility
-
-1. **Provide tooltips** - For screen reader support
-2. **Use legend** - As alternative to visual-only information
-3. **High contrast colors** - For better visibility
-4. **Data labels** - Show actual values, not just colors
 
 ## Common Scenarios
 
@@ -477,10 +409,3 @@ While technically possible, overlapping multiple pie series is not recommended. 
     </chart:SfCircularChart.Series>
 </chart:SfCircularChart>
 ```
-
-## Related Resources
-
-- **Doughnut Charts** - See `doughnut-charts.md` for doughnut-specific features
-- **Data Labels** - See `data-labels.md` for label customization
-- **Legend** - See `legend.md` for legend configuration
-- **Appearance** - See `appearance.md` for color customization

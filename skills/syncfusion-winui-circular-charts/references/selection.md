@@ -441,13 +441,6 @@ private void OnSelectionChanged(object sender, ChartSelectionChangedEventArgs e)
 2. **Batch updates** - If multiple selections trigger updates
 3. **Cancel wisely** - Use SelectionChanging sparingly
 
-### Accessibility
-
-1. **Keyboard support** - Ensure segments can be selected via keyboard
-2. **Visual indicators** - Don't rely on color alone
-3. **Screen reader** - Announce selection changes
-4. **Touch targets** - Ensure segments are large enough to tap
-
 ## Common Scenarios
 
 ### Scenario 1: Basic Single Selection
@@ -556,10 +549,3 @@ private void ValidateSelection(object sender, ChartSelectionChangingEventArgs e)
     }
 }
 ```
-
-## Related Resources
-
-- **Explode Segments** - See `explode-segments.md` for highlighting segments
-- **Tooltips** - See `tooltips.md` for hover information
-- **Legend** - See `legend.md` for toggle visibility
-- **Data Labels** - See `data-labels.md` for on-chart information

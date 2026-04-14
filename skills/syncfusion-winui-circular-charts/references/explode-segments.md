@@ -335,13 +335,6 @@ public class ChartViewModel
 4. **Consider chart size** - Ensure exploded segments fit in container
 5. **Test interactions** - Verify ExplodeOnTap behaves as expected
 
-### Accessibility
-
-1. **Don't rely on explosion alone** - Use color, labels, or selection too
-2. **Clear visual feedback** - Ensure explosion is noticeable
-3. **Keyboard support** - Allow keyboard navigation to exploded segments
-4. **Touch targets** - Ensure segments are tappable on touch devices
-
 ### Performance
 
 1. **Minimal impact** - Explosion is efficient, no performance concerns
@@ -465,11 +458,3 @@ public class ChartViewModel
 2. Add margin to chart container
 3. Reduce chart's Radius property
 4. Adjust chart size/container
-
-## Related Resources
-
-- **Selection** - See `selection.md` for combining with selection
-- **Tooltips** - See `tooltips.md` for hover information
-- **Data Labels** - See `data-labels.md` for labeling exploded segments
-- **Pie Charts** - See `pie-charts.md` for pie-specific features
-- **Doughnut Charts** - See `doughnut-charts.md` for doughnut-specific features

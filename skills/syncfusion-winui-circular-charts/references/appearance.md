@@ -1,221 +1,139 @@
-# Appearance and Styling
+# Appearance
+
+The appearance of the `SfCircularChart` can be customized using predefined palettes, custom palettes, and gradients to enrich your WinUI application.
+
+---
 
 ## Table of Contents
-- [Overview](#overview)
-- [Predefined Palettes](#predefined-palettes)
-- [Custom Color Palettes](#custom-color-palettes)
-- [Gradient Fills](#gradient-fills)
-- [Segment-Specific Colors](#segment-specific-colors)
-- [Stroke Customization](#stroke-customization)
-- [Best Practices](#best-practices)
-- [Common Scenarios](#common-scenarios)
+- [Predefined PaletteBrushes](#predefined-palettebrushes)
+- [Custom PaletteBrushes](#custom-palettebrushes)
+- [Applying Gradient](#applying-gradient)
 - [Related Resources](#related-resources)
 
-## Overview
+---
 
-The WinUI circular chart provides extensive customization options for colors, gradients, and visual styling. You can use predefined color palettes, define custom colors, or apply gradients to individual segments.
+## Predefined PaletteBrushes
 
-**Key Customization Features:**
-- Predefined palette themes (Metro, Vibrant, etc.)
-- Custom color palettes via PaletteBrushes
-- Linear and radial gradients
-- Per-segment color control
-- Stroke (border) customization
-- Fill and opacity settings
+The `SfCircularChart` provides **one default predefined palette** that is automatically applied to circular series (PieSeries, DoughnutSeries). This is the default appearance without any explicit customization.
 
-## Predefined Palettes
-
-The chart includes several built-in color palettes:
-
-### Available Palettes
-
-- **Metro** - Flat, modern colors
-- **AutumnBrights** - Warm autumn tones
-- **FloraHues** - Natural, garden colors
-- **Pineapple** - Bright tropical colors
-- **TomotoSpectrum** - Warm red spectrum
-- **RedChrome** - Bold red theme
-- **PurpleChrome** - Rich purple theme
-- **BlueChrome** - Cool blue theme
-- **GreenChrome** - Fresh green theme
-- **Elite** - Professional, muted colors
-- **LightCandy** - Soft pastel colors
-- **SandyBeach** - Beach-inspired neutrals
-
-### Using a Predefined Palette
+### Default Palette Example
 
 **XAML:**
 ```xml
-<chart:SfCircularChart Palette="Metro">
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding Data}"
-                       XBindingPath="Category"
-                       YBindingPath="Value"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
+<chart:PieSeries ItemsSource="{Binding Data}" 
+                 XBindingPath="Product" 
+                 YBindingPath="SalesRate">
+</chart:PieSeries>
 ```
 
 **C#:**
 ```csharp
-SfCircularChart chart = new SfCircularChart();
-chart.Palette = ChartColorPalette.Metro;
-
 PieSeries series = new PieSeries()
 {
     ItemsSource = viewModel.Data,
-    XBindingPath = "Category",
-    YBindingPath = "Value"
+    XBindingPath = "Product",
+    YBindingPath = "SalesRate"
 };
 chart.Series.Add(series);
 ```
 
-### Comparing Palettes
+> **Note:** The WinUI circular chart currently supports only one predefined palette (the default). This is automatically applied to series without additional configuration.
 
-**XAML:**
-```xml
-<!-- Vibrant colors for marketing data -->
-<chart:SfCircularChart Palette="AutumnBrights">
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding MarketingData}"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
+---
 
-<!-- Professional colors for financial data -->
-<chart:SfCircularChart Palette="Elite">
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding FinancialData}"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
+## Custom PaletteBrushes
 
-## Custom Color Palettes
-
-Define your own color scheme using **PaletteBrushes**:
+You can define custom color schemes using the `PaletteBrushes` property on the series. This property accepts a collection of `Brush` objects that will be applied to data points in order.
 
 ### Basic Custom Palette
 
 **XAML:**
 ```xml
 <chart:SfCircularChart>
-    <chart:SfCircularChart.PaletteBrushes>
-        <SolidColorBrush Color="#FF6B9BD1"/>
-        <SolidColorBrush Color="#FFA4D65E"/>
-        <SolidColorBrush Color="#FFFF6D6D"/>
-        <SolidColorBrush Color="#FFFFD84C"/>
-        <SolidColorBrush Color="#FF9966FF"/>
-    </chart:SfCircularChart.PaletteBrushes>
+    <chart:SfCircularChart.Resources>
+        <BrushCollection x:Key="customBrushes">
+            <SolidColorBrush Color="#4dd0e1"/>
+            <SolidColorBrush Color="#26c6da"/>
+            <SolidColorBrush Color="#00bcd4"/>
+            <SolidColorBrush Color="#00acc1"/>
+            <SolidColorBrush Color="#0097a7"/>
+            <SolidColorBrush Color="#00838f"/>
+        </BrushCollection>
+    </chart:SfCircularChart.Resources>
 
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding Data}"
-                       XBindingPath="Product"
-                       YBindingPath="Sales"/>
-    </chart:SfCircularChart.Series>
+    <chart:PieSeries ItemsSource="{Binding Data}" 
+                     XBindingPath="Product" 
+                     YBindingPath="SalesRate"
+                     PaletteBrushes="{StaticResource customBrushes}" />
 </chart:SfCircularChart>
 ```
 
 **C#:**
 ```csharp
 SfCircularChart chart = new SfCircularChart();
-
-chart.PaletteBrushes = new List<Brush>()
-{
-    new SolidColorBrush(ColorHelper.FromArgb(255, 107, 155, 209)), // Blue
-    new SolidColorBrush(ColorHelper.FromArgb(255, 164, 214, 94)),  // Green
-    new SolidColorBrush(ColorHelper.FromArgb(255, 255, 109, 109)), // Red
-    new SolidColorBrush(ColorHelper.FromArgb(255, 255, 216, 76)),  // Yellow
-    new SolidColorBrush(ColorHelper.FromArgb(255, 153, 102, 255))  // Purple
-};
 
 PieSeries series = new PieSeries()
 {
     ItemsSource = viewModel.Data,
     XBindingPath = "Product",
-    YBindingPath = "Sales"
+    YBindingPath = "SalesRate"
+};
+
+series.PaletteBrushes = new List<Brush>()
+{
+    new SolidColorBrush(ColorHelper.FromArgb(255, 77, 208, 225)),
+    new SolidColorBrush(ColorHelper.FromArgb(255, 38, 198, 218)),
+    new SolidColorBrush(ColorHelper.FromArgb(255, 0, 188, 212)),
+    new SolidColorBrush(ColorHelper.FromArgb(255, 0, 172, 193)),
+    new SolidColorBrush(ColorHelper.FromArgb(255, 0, 151, 167)),
+    new SolidColorBrush(ColorHelper.FromArgb(255, 0, 131, 143))
 };
 
 chart.Series.Add(series);
 ```
 
-**How it works:** The chart cycles through the custom colors for each data point
+**How it works:** The chart cycles through the custom brushes in the collection, assigning each brush to successive data points.
 
-### Brand Colors
+---
 
-**XAML:**
-```xml
-<chart:SfCircularChart>
-    <chart:SfCircularChart.PaletteBrushes>
-        <!-- Primary brand color -->
-        <SolidColorBrush Color="#1976D2"/>
-        <!-- Secondary brand color -->
-        <SolidColorBrush Color="#FFA726"/>
-        <!-- Accent colors -->
-        <SolidColorBrush Color="#66BB6A"/>
-        <SolidColorBrush Color="#EF5350"/>
-        <SolidColorBrush Color="#AB47BC"/>
-    </chart:SfCircularChart.PaletteBrushes>
+## Applying Gradient
 
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding CompanyData}"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
+Gradients can be applied to circular chart segments using `LinearGradientBrush` or `RadialGradientBrush` in the `PaletteBrushes` collection.
 
-### Monochromatic Palette
+### Linear Gradient Example
 
 **XAML:**
 ```xml
 <chart:SfCircularChart>
-    <chart:SfCircularChart.PaletteBrushes>
-        <SolidColorBrush Color="#0D47A1"/>
-        <SolidColorBrush Color="#1565C0"/>
-        <SolidColorBrush Color="#1976D2"/>
-        <SolidColorBrush Color="#1E88E5"/>
-        <SolidColorBrush Color="#42A5F5"/>
-        <SolidColorBrush Color="#64B5F6"/>
-    </chart:SfCircularChart.PaletteBrushes>
+    <chart:SfCircularChart.Resources>
+        <BrushCollection x:Key="customBrushes">
+            <LinearGradientBrush>
+                <GradientStop Offset="1" Color="#FFE7C7" />
+                <GradientStop Offset="0" Color="#FCB69F" />
+            </LinearGradientBrush>
+            <LinearGradientBrush>
+                <GradientStop Offset="1" Color="#fadd7d" />
+                <GradientStop Offset="0" Color="#fccc2d" />
+            </LinearGradientBrush>
+            <LinearGradientBrush>
+                <GradientStop Offset="1" Color="#DCFA97" />
+                <GradientStop Offset="0" Color="#96E6A1" />
+            </LinearGradientBrush>
+            <LinearGradientBrush>
+                <GradientStop Offset="1" Color="#DDD6F3" />
+                <GradientStop Offset="0" Color="#FAACA8" />
+            </LinearGradientBrush>
+            <LinearGradientBrush>
+                <GradientStop Offset="1" Color="#A8EAEE" />
+                <GradientStop Offset="0" Color="#7BB0F9" />
+            </LinearGradientBrush>
+        </BrushCollection>
+    </chart:SfCircularChart.Resources>
 
-    <chart:SfCircularChart.Series>
-        <chart:DoughnutSeries ItemsSource="{Binding Data}"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
-
-**Use case:** Different shades of blue for cohesive, professional look
-
-## Gradient Fills
-
-Apply gradient brushes for sophisticated visual effects:
-
-### Linear Gradient
-
-**XAML:**
-```xml
-<chart:SfCircularChart>
-    <chart:SfCircularChart.PaletteBrushes>
-        <!-- Blue gradient -->
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#667eea" Offset="0"/>
-            <GradientStop Color="#764ba2" Offset="1"/>
-        </LinearGradientBrush>
-        
-        <!-- Orange gradient -->
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#f093fb" Offset="0"/>
-            <GradientStop Color="#f5576c" Offset="1"/>
-        </LinearGradientBrush>
-        
-        <!-- Green gradient -->
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#4facfe" Offset="0"/>
-            <GradientStop Color="#00f2fe" Offset="1"/>
-        </LinearGradientBrush>
-    </chart:SfCircularChart.PaletteBrushes>
-
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding Data}"
-                       XBindingPath="Category"
-                       YBindingPath="Value"/>
-    </chart:SfCircularChart.Series>
+    <chart:PieSeries ItemsSource="{Binding Data}" 
+                     XBindingPath="Product" 
+                     YBindingPath="SalesRate"
+                     PaletteBrushes="{StaticResource customBrushes}" />
 </chart:SfCircularChart>
 ```
 
@@ -223,225 +141,81 @@ Apply gradient brushes for sophisticated visual effects:
 ```csharp
 SfCircularChart chart = new SfCircularChart();
 
-// Create gradient brush
+// Create gradient brushes
 LinearGradientBrush gradient1 = new LinearGradientBrush()
 {
     StartPoint = new Point(0, 0),
     EndPoint = new Point(1, 1)
 };
-gradient1.GradientStops.Add(new GradientStop() { Color = ColorHelper.FromArgb(255, 102, 126, 234), Offset = 0 });
-gradient1.GradientStops.Add(new GradientStop() { Color = ColorHelper.FromArgb(255, 118, 75, 162), Offset = 1 });
+gradient1.GradientStops.Add(new GradientStop() { Color = ColorHelper.FromArgb(255, 255, 231, 199), Offset = 1 });
+gradient1.GradientStops.Add(new GradientStop() { Color = ColorHelper.FromArgb(255, 252, 182, 159), Offset = 0 });
 
 LinearGradientBrush gradient2 = new LinearGradientBrush()
 {
     StartPoint = new Point(0, 0),
     EndPoint = new Point(1, 1)
 };
-gradient2.GradientStops.Add(new GradientStop() { Color = ColorHelper.FromArgb(255, 240, 147, 251), Offset = 0 });
-gradient2.GradientStops.Add(new GradientStop() { Color = ColorHelper.FromArgb(255, 245, 87, 108), Offset = 1 });
+gradient2.GradientStops.Add(new GradientStop() { Color = ColorHelper.FromArgb(255, 250, 221, 125), Offset = 1 });
+gradient2.GradientStops.Add(new GradientStop() { Color = ColorHelper.FromArgb(255, 252, 204, 45), Offset = 0 });
 
-chart.PaletteBrushes = new List<Brush>() { gradient1, gradient2 };
+PieSeries series = new PieSeries()
+{
+    ItemsSource = viewModel.Data,
+    XBindingPath = "Product",
+    YBindingPath = "SalesRate",
+    PaletteBrushes = new List<Brush>() { gradient1, gradient2 }
+};
+
+chart.Series.Add(series);
 ```
 
-### Radial Gradient
+### Radial Gradient Example
 
 **XAML:**
 ```xml
 <chart:SfCircularChart>
-    <chart:SfCircularChart.PaletteBrushes>
-        <RadialGradientBrush>
-            <GradientStop Color="#ffcc00" Offset="0"/>
-            <GradientStop Color="#ff6600" Offset="1"/>
-        </RadialGradientBrush>
-        
-        <RadialGradientBrush>
-            <GradientStop Color="#00ccff" Offset="0"/>
-            <GradientStop Color="#0066cc" Offset="1"/>
-        </RadialGradientBrush>
-        
-        <RadialGradientBrush>
-            <GradientStop Color="#66ff66" Offset="0"/>
-            <GradientStop Color="#009900" Offset="1"/>
-        </RadialGradientBrush>
-    </chart:SfCircularChart.PaletteBrushes>
+    <chart:SfCircularChart.Resources>
+        <BrushCollection x:Key="radialGradients">
+            <RadialGradientBrush>
+                <GradientStop Color="#ffcc00" Offset="0"/>
+                <GradientStop Color="#ff6600" Offset="1"/>
+            </RadialGradientBrush>
+            <RadialGradientBrush>
+                <GradientStop Color="#00ccff" Offset="0"/>
+                <GradientStop Color="#0066cc" Offset="1"/>
+            </RadialGradientBrush>
+            <RadialGradientBrush>
+                <GradientStop Color="#66ff66" Offset="0"/>
+                <GradientStop Color="#009900" Offset="1"/>
+            </RadialGradientBrush>
+        </BrushCollection>
+    </chart:SfCircularChart.Resources>
 
-    <chart:SfCircularChart.Series>
-        <chart:DoughnutSeries ItemsSource="{Binding Data}"
-                            XBindingPath="Label"
-                            YBindingPath="Value"/>
-    </chart:SfCircularChart.Series>
+    <chart:DoughnutSeries ItemsSource="{Binding Data}"
+                          XBindingPath="Label"
+                          YBindingPath="Value"
+                          PaletteBrushes="{StaticResource radialGradients}"/>
 </chart:SfCircularChart>
 ```
 
-**Effect:** Creates depth and dimension in segments
+**Effect:** Radial gradients create depth and dimension in chart segments, giving a 3D-like appearance.
 
-### Multi-Stop Gradient
+---
 
-**XAML:**
-```xml
-<chart:SfCircularChart>
-    <chart:SfCircularChart.PaletteBrushes>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#ff9a56" Offset="0"/>
-            <GradientStop Color="#ff6a88" Offset="0.5"/>
-            <GradientStop Color="#ff99ac" Offset="1"/>
-        </LinearGradientBrush>
-        
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#a8e063" Offset="0"/>
-            <GradientStop Color="#56ab2f" Offset="0.5"/>
-            <GradientStop Color="#2d5016" Offset="1"/>
-        </LinearGradientBrush>
-    </chart:SfCircularChart.PaletteBrushes>
+## Additional Customizations
 
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding Data}"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
+### Stroke Customization
 
-## Segment-Specific Colors
-
-Control individual segment colors through the data model:
-
-### Using Fill Property in Data Model
-
-**ViewModel:**
-```csharp
-public class SalesData
-{
-    public string Product { get; set; }
-    public double Sales { get; set; }
-    public Brush Fill { get; set; }
-}
-
-public class ChartViewModel
-{
-    public ObservableCollection<SalesData> Data { get; set; }
-    
-    public ChartViewModel()
-    {
-        Data = new ObservableCollection<SalesData>()
-        {
-            new SalesData() 
-            { 
-                Product = "Product A", 
-                Sales = 30,
-                Fill = new SolidColorBrush(Colors.DodgerBlue)
-            },
-            new SalesData() 
-            { 
-                Product = "Product B", 
-                Sales = 25,
-                Fill = new SolidColorBrush(Colors.Orange)
-            },
-            new SalesData() 
-            { 
-                Product = "Product C", 
-                Sales = 20,
-                Fill = new SolidColorBrush(Colors.Green)
-            }
-        };
-    }
-}
-```
+Customize segment borders using the `Stroke` and `StrokeWidth` properties.
 
 **XAML:**
 ```xml
 <chart:SfCircularChart>
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding Data}"
-                       XBindingPath="Product"
-                       YBindingPath="Sales"
-                       PointColorMapping="Fill"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
-
-**Key property:** `PointColorMapping="Fill"` maps the Fill property in the data model
-
-### Conditional Coloring
-
-**ViewModel:**
-```csharp
-public class ChartViewModel
-{
-    public ObservableCollection<SalesData> Data { get; set; }
-    
-    public ChartViewModel()
-    {
-        Data = new ObservableCollection<SalesData>();
-        
-        foreach (var item in GetSalesData())
-        {
-            // Green for high sales, red for low sales
-            item.Fill = item.Sales > 50 
-                ? new SolidColorBrush(Colors.Green)
-                : new SolidColorBrush(Colors.Red);
-            
-            Data.Add(item);
-        }
-    }
-}
-```
-
-### Gradient Per Segment
-
-**ViewModel:**
-```csharp
-public class ChartViewModel
-{
-    public ObservableCollection<SalesData> Data { get; set; }
-    
-    public ChartViewModel()
-    {
-        Data = new ObservableCollection<SalesData>()
-        {
-            new SalesData() 
-            { 
-                Product = "Product A", 
-                Sales = 40,
-                Fill = CreateGradient(Colors.Blue, Colors.LightBlue)
-            },
-            new SalesData() 
-            { 
-                Product = "Product B", 
-                Sales = 35,
-                Fill = CreateGradient(Colors.Orange, Colors.Yellow)
-            }
-        };
-    }
-    
-    private LinearGradientBrush CreateGradient(Color start, Color end)
-    {
-        LinearGradientBrush brush = new LinearGradientBrush()
-        {
-            StartPoint = new Point(0, 0),
-            EndPoint = new Point(1, 1)
-        };
-        brush.GradientStops.Add(new GradientStop() { Color = start, Offset = 0 });
-        brush.GradientStops.Add(new GradientStop() { Color = end, Offset = 1 });
-        return brush;
-    }
-}
-```
-
-## Stroke Customization
-
-Customize segment borders (strokes):
-
-### Basic Stroke
-
-**XAML:**
-```xml
-<chart:SfCircularChart>
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding Data}"
-                       XBindingPath="Category"
-                       YBindingPath="Value"
-                       Stroke="White"
-                       StrokeThickness="3"/>
-    </chart:SfCircularChart.Series>
+    <chart:PieSeries ItemsSource="{Binding Data}"
+                     XBindingPath="Category"
+                     YBindingPath="Value"
+                     Stroke="White"
+                     StrokeWidth="2"/>
 </chart:SfCircularChart>
 ```
 
@@ -453,210 +227,8 @@ PieSeries series = new PieSeries()
     XBindingPath = "Category",
     YBindingPath = "Value",
     Stroke = new SolidColorBrush(Colors.White),
-    StrokeThickness = 3
+    StrokeWidth = 2
 };
 ```
 
-**Effect:** White borders around each segment
-
-### No Stroke (Seamless)
-
-**XAML:**
-```xml
-<chart:PieSeries ItemsSource="{Binding Data}"
-               StrokeThickness="0"/>
-```
-
-**Use case:** Modern, flat design with no segment separation
-
-### Highlighted Stroke
-
-**XAML:**
-```xml
-<chart:PieSeries ItemsSource="{Binding Data}"
-               Stroke="#333333"
-               StrokeThickness="2"/>
-```
-
-**Effect:** Dark borders for strong segment definition
-
-## Best Practices
-
-### Color Selection
-
-1. **Contrast** - Ensure adjacent segments are distinguishable
-2. **Accessibility** - Consider color-blind friendly palettes
-3. **Context** - Use colors that align with data meaning (red for danger, green for success)
-4. **Brand consistency** - Use company colors where appropriate
-5. **Limit palette size** - 5-8 colors typically sufficient for readability
-
-### Gradients
-
-1. **Subtlety** - Use gradients sparingly; they can be distracting
-2. **Direction** - Keep gradient direction consistent across segments
-3. **Contrast preservation** - Ensure gradients don't reduce readability
-4. **Performance** - Be aware that gradients may impact performance with many segments
-
-### Stroke
-
-1. **Separation** - Use stroke when segments are similar colors
-2. **Thickness** - 1-3 pixels typically works best
-3. **Color choice** - White or light gray for most backgrounds
-4. **Consistency** - Use same stroke style across all series in multi-series charts
-
-### Palette Choice
-
-1. **Predefined first** - Try built-in palettes before creating custom
-2. **Professional contexts** - Use Elite, Metro for business applications
-3. **Creative contexts** - Use brighter palettes (FloraHues, AutumnBrights) for marketing
-4. **Light backgrounds** - Use darker, saturated colors
-5. **Dark backgrounds** - Use brighter colors with higher luminance
-
-## Common Scenarios
-
-### Scenario 1: Corporate Dashboard
-
-```xml
-<chart:SfCircularChart Palette="Elite">
-    <chart:SfCircularChart.Series>
-        <chart:DoughnutSeries ItemsSource="{Binding QuarterlyRevenue}"
-                            XBindingPath="Quarter"
-                            YBindingPath="Revenue"
-                            Stroke="White"
-                            StrokeThickness="2"
-                            InnerRadius="0.6"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
-
-**Purpose:** Professional, muted colors with clear segment separation
-
-### Scenario 2: Marketing Report
-
-```xml
-<chart:SfCircularChart>
-    <chart:SfCircularChart.PaletteBrushes>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF6B9BD1" Offset="0"/>
-            <GradientStop Color="#FF4A7FB8" Offset="1"/>
-        </LinearGradientBrush>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFA4D65E" Offset="0"/>
-            <GradientStop Color="#FF7FB544" Offset="1"/>
-        </LinearGradientBrush>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFF6D6D" Offset="0"/>
-            <GradientStop Color="#FFFF4545" Offset="1"/>
-        </LinearGradientBrush>
-    </chart:SfCircularChart.PaletteBrushes>
-
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding CampaignData}"
-                       StrokeThickness="0"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
-
-**Purpose:** Eye-catching gradients for visual impact
-
-### Scenario 3: Status Indicator
-
-```xml
-<chart:SfCircularChart>
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding StatusData}"
-                       XBindingPath="Status"
-                       YBindingPath="Count"
-                       PointColorMapping="StatusColor"
-                       Stroke="White"
-                       StrokeThickness="2"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
-
-**ViewModel:**
-```csharp
-public class StatusViewModel
-{
-    public ObservableCollection<StatusData> StatusData { get; set; }
-    
-    public StatusViewModel()
-    {
-        StatusData = new ObservableCollection<StatusData>()
-        {
-            new StatusData() 
-            { 
-                Status = "Success", 
-                Count = 85,
-                StatusColor = new SolidColorBrush(Colors.Green)
-            },
-            new StatusData() 
-            { 
-                Status = "Warning", 
-                Count = 10,
-                StatusColor = new SolidColorBrush(Colors.Orange)
-            },
-            new StatusData() 
-            { 
-                Status = "Error", 
-                Count = 5,
-                StatusColor = new SolidColorBrush(Colors.Red)
-            }
-        };
-    }
-}
-```
-
-**Purpose:** Semantic colors for status visualization
-
-### Scenario 4: Monochrome with Accent
-
-```xml
-<chart:SfCircularChart>
-    <chart:SfCircularChart.PaletteBrushes>
-        <SolidColorBrush Color="#E0E0E0"/>
-        <SolidColorBrush Color="#BDBDBD"/>
-        <SolidColorBrush Color="#9E9E9E"/>
-        <SolidColorBrush Color="#1976D2"/>  <!-- Accent color -->
-    </chart:SfCircularChart.PaletteBrushes>
-
-    <chart:SfCircularChart.Series>
-        <chart:PieSeries ItemsSource="{Binding Data}"
-                       Stroke="White"
-                       StrokeThickness="1"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
-
-**Purpose:** Highlight one segment while keeping others neutral
-
-### Scenario 5: Dark Theme
-
-```xml
-<chart:SfCircularChart Background="#1E1E1E">
-    <chart:SfCircularChart.PaletteBrushes>
-        <SolidColorBrush Color="#42A5F5"/>
-        <SolidColorBrush Color="#66BB6A"/>
-        <SolidColorBrush Color="#FFA726"/>
-        <SolidColorBrush Color="#EF5350"/>
-        <SolidColorBrush Color="#AB47BC"/>
-    </chart:SfCircularChart.PaletteBrushes>
-
-    <chart:SfCircularChart.Series>
-        <chart:DoughnutSeries ItemsSource="{Binding Data}"
-                            XBindingPath="Category"
-                            YBindingPath="Value"
-                            Stroke="#1E1E1E"
-                            StrokeThickness="2"/>
-    </chart:SfCircularChart.Series>
-</chart:SfCircularChart>
-```
-
-**Purpose:** Bright, vibrant colors on dark background for modern UI
-
-## Related Resources
-
-- **Legend** - See `legend.md` for legend icon colors
-- **Data Labels** - See `data-labels.md` for UseSeriesPalette option
-- **Selection** - See `selection.md` for SelectionBrush customization
-- **Getting Started** - See `getting-started.md` for basic chart setup
+---

@@ -52,7 +52,6 @@ Create rich headers using any UIElement:
                   Margin="10"
                   FontFamily="Verdana"
                   FontSize="18"
-                  FontWeight="Bold"
                   Foreground="DarkBlue"/>
     </chart:SfCircularChart.Header>
     
@@ -72,7 +71,6 @@ TextBlock header = new TextBlock()
     Margin = new Thickness(10),
     FontFamily = new FontFamily("Verdana"),
     FontSize = 18,
-    FontWeight = FontWeights.Bold,
     Foreground = new SolidColorBrush(Colors.DarkBlue)
 };
 
@@ -462,10 +460,3 @@ public class ChartViewModel
     </chart:SfCircularChart.Header>
 </chart:SfCircularChart>
 ```
-
-## Related Resources
-
-- **Legend** - See `legend.md` for additional chart labeling
-- **Data Labels** - See `data-labels.md` for on-chart text
-- **Appearance** - See `appearance.md` for overall chart styling
-- **Getting Started** - See `getting-started.md` for basic setup

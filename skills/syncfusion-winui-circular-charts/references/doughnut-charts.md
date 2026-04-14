@@ -506,10 +506,3 @@ Both PieSeries and DoughnutSeries:
     </chart:SfCircularChart.Series>
 </chart:SfCircularChart>
 ```
-
-## Related Resources
-
-- **Pie Charts** - See `pie-charts.md` for pie-specific features
-- **Data Labels** - See `data-labels.md` for label positioning
-- **Legend** - See `legend.md` for series identification
-- **Appearance** - See `appearance.md` for color customization

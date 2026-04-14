@@ -21,24 +21,11 @@ Use this skill when the user needs to:
 - **Customize chart appearance** (legends, data labels, colors, themes, styling)
 - **Display financial data** (OHLC, candlestick charts)
 - **Compare multiple data series** in the same chart area
-- **Create stacked visualizations** to show part-to-whole relationships
 - **Handle touch and mouse interactions** for data exploration
 
 ## Component Overview
 
-The **SfCartesianChart** is Syncfusion's primary charting control for WinUI applications, designed to visualize data using a two-dimensional cartesian coordinate system with horizontal (X) and vertical (Y) axes. It excels at displaying relationships, trends, comparisons, and distributions across various data types.
-
-### What Makes SfCartesianChart Powerful
-
-**Versatile Visualization**: Supports 15+ series types ranging from basic (column, line, area, bar) to specialized (scatter, bubble, financial OHLC/Candle) to high-performance (fast series for millions of data points). All series can be mixed within the same chart for rich, multi-dimensional visualizations.
-
-**Flexible Axis System**: Provides four axis types (Numerical, Category, DateTime, Logarithmic) with support for multiple axes per chart. This enables complex scenarios like displaying stock prices with volume on separate Y-axes, or comparing datasets with different scales side-by-side.
-
-**High Performance**: Fast series variants use optimized rendering techniques (polyline segments and WriteableBitmap) to handle massive datasets—up to millions of data points—with smooth interactions. Essential for real-time monitoring, IoT telemetry, and scientific applications.
-
-**Rich Interactivity**: Built-in support for zooming (pinch, mouse wheel), panning, tooltips, trackball (multi-series tracking), crosshair, and selection. Users can explore data naturally through touch and mouse gestures without custom code.
-
-**Enterprise-Ready Customization**: Every visual aspect is customizable—from axis labels, grid lines, and legends to series colors, data labels, and chart areas. Supports templates for tooltips and legends, enabling branded, professional visualizations that match application themes.
+The **SfCartesianChart** is Syncfusion's primary charting control for WinUI applications using a two-dimensional coordinate system. Supports 15+ series types (basic, specialized, stacked, fast), four axis types (Numerical, Category, DateTime, Logarithmic), and handles millions of data points with optimized fast series. Includes zooming, panning, tooltips, trackball, crosshair, and full customization options.
 
 ### Core Architecture
 
@@ -98,8 +85,7 @@ SfCartesianChart
 - Legends with positioning and templates
 - Data labels with positioning and formatting
 - Chart titles and headers
-- ChartArea and PlotArea styling
-- Color palettes and themes
+- ChartArea, PlotArea styling, Color palettes and themes
 
 ## Documentation and Navigation Guide
 
@@ -128,8 +114,7 @@ SfCartesianChart
 - Axis labels (rotation, formatting, styling)
 - Axis headers and titles
 - Grid lines (major/minor, visibility, styling)
-- Tick lines (customization and styling)
-- Axis line styling
+- Tick lines (customization and styling) and Axis line styling
 - Padding and range padding
 - IsInversed and OpposedPosition properties
 - Auto-scrolling with AutoScrollingDelta
@@ -208,8 +193,7 @@ SfCartesianChart
 - Touch gestures (pinch-to-zoom)
 - Mouse wheel zooming
 - Programmatic zoom (ZoomPosition, ZoomFactor)
-- Reset zoom functionality
-- Zoom toolbar
+- Reset zoom functionality and Zoom toolbar
 
 ### Customization
 
@@ -248,8 +232,7 @@ SfCartesianChart
 - PaletteBrushes for series colors
 - Series-level styling (Fill, Stroke, StrokeThickness)
 - PlotArea customization
-- Grid line styling
-- Theme integration
+- Grid line styling and Theme integration
 - Responsive design patterns
 
 ## Quick Start Example
@@ -274,19 +257,13 @@ Here's a minimal example to create a basic cartesian chart with column series:
         
         <!-- Add Column Series -->
         <chart:ColumnSeries ItemsSource="{Binding SalesData}"
-                           XBindingPath="Product" 
-                           YBindingPath="Amount"
-                           Label="Q1 Sales"
-                           ShowDataLabels="True"/>
-        
+                            XBindingPath="Product" YBindingPath="Amount"
+                            Label="Q1 Sales" ShowDataLabels="True"/>
     </chart:SfCartesianChart>
-    
 </Window>
 ```
 
 ```csharp
-using Syncfusion.UI.Xaml.Charts;
-
 // Data Model
 public class SalesData
 {
@@ -294,44 +271,16 @@ public class SalesData
     public double Amount { get; set; }
 }
 
-// ViewModel
+// ViewModel with sample data
 public class ViewModel
 {
-    public List<SalesData> SalesData { get; set; }
-    
-    public ViewModel()
+    public List<SalesData> SalesData { get; set; } = new()
     {
-        SalesData = new List<SalesData>
-        {
-            new SalesData { Product = "Product A", Amount = 25000 },
-            new SalesData { Product = "Product B", Amount = 38000 },
-            new SalesData { Product = "Product C", Amount = 17000 },
-            new SalesData { Product = "Product D", Amount = 42000 }
-        };
-    }
+        new() { Product = "Product A", Amount = 25000 },
+        new() { Product = "Product B", Amount = 38000 },
+        new() { Product = "Product C", Amount = 17000 }
+    };
 }
-
-// Code-behind
-SfCartesianChart chart = new SfCartesianChart();
-chart.Header = "Sales Comparison";
-
-// Configure axes
-CategoryAxis xAxis = new CategoryAxis { Header = "Products" };
-chart.XAxes.Add(xAxis);
-
-NumericalAxis yAxis = new NumericalAxis { Header = "Sales ($)" };
-chart.YAxes.Add(yAxis);
-
-// Add series
-ColumnSeries series = new ColumnSeries
-{
-    ItemsSource = new ViewModel().SalesData,
-    XBindingPath = "Product",
-    YBindingPath = "Amount",
-    Label = "Q1 Sales",
-    ShowDataLabels = true
-};
-chart.Series.Add(series);
 ```
 
 ## Common Patterns
@@ -343,18 +292,8 @@ Compare multiple datasets in the same chart:
 ```xaml
 <chart:SfCartesianChart Header="Quarterly Sales Comparison">
     
-    <chart:SfCartesianChart.Legend>
-        <chart:ChartLegend/>
-    </chart:SfCartesianChart.Legend>
-    
-    <chart:SfCartesianChart.XAxes>
-        <chart:CategoryAxis/>
-    </chart:SfCartesianChart.XAxes>
-    
-    <chart:SfCartesianChart.YAxes>
-        <chart:NumericalAxis/>
-    </chart:SfCartesianChart.YAxes>
-    
+    <!-- Define X and Y Axis   -->
+
     <!-- Multiple series -->
     <chart:ColumnSeries Label="Q1" 
                        ItemsSource="{Binding Q1Data}"
@@ -410,13 +349,7 @@ Show contribution of parts to a total:
 ```xaml
 <chart:SfCartesianChart Header="Market Share by Region">
     
-    <chart:SfCartesianChart.XAxes>
-        <chart:CategoryAxis/>
-    </chart:SfCartesianChart.XAxes>
-    
-    <chart:SfCartesianChart.YAxes>
-        <chart:NumericalAxis/>
-    </chart:SfCartesianChart.YAxes>
+    <!-- Define X and Y Axis   -->
     
     <!-- Stacked Column Series -->
     <chart:StackedColumnSeries Label="Region A" 
@@ -444,11 +377,7 @@ Use fast series for millions of data points:
 ```csharp
 SfCartesianChart chart = new SfCartesianChart();
 
-DateTimeAxis xAxis = new DateTimeAxis();
-chart.XAxes.Add(xAxis);
-
-NumericalAxis yAxis = new NumericalAxis();
-chart.YAxes.Add(yAxis);
+//Define X and Y Axis   -->
 
 // Use FastLineBitmapSeries for performance
 FastLineBitmapSeries series = new FastLineBitmapSeries
@@ -550,12 +479,8 @@ Display OHLC data with volume on separate axis:
 
 1. **Business Dashboards** - Multi-series column/line charts with legends and tooltips
 2. **Financial Analysis** - Candlestick/OHLC charts with volume overlay on multiple axes
-3. **Scientific Data** - Scatter plots for correlation, line charts for trends
-4. **Time-Series Monitoring** - Real-time line charts with zooming/panning
-5. **Comparative Analysis** - Stacked charts for part-to-whole relationships
-6. **IoT/Telemetry** - Fast series for high-frequency sensor data (millions of points)
-7. **Sales Reports** - Bar/column charts with data labels
-8. **Market Research** - Bubble charts for three-dimensional data analysis
+3. **Time-Series Monitoring** - Real-time line charts with zooming/panning
+4. **Comparative Analysis** - Stacked charts for part-to-whole relationships
 
 ## Troubleshooting Tips
 
@@ -573,11 +498,3 @@ When working with Syncfusion WinUI components, you may also need:
 - **Polar Charts** - For polar and radar visualizations
 - **3D Charts** - For three-dimensional data representation
 - **Funnel/Pyramid Charts** - For hierarchical data visualization
-
----
-
-**Installation**: Install the `Syncfusion.Chart.WinUI` NuGet package to get started.
-
-**Namespace**: `using Syncfusion.UI.Xaml.Charts;`
-
-**Documentation**: Refer to the reference files in this skill for detailed implementation guidance.

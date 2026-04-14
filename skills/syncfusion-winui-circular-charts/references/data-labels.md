@@ -59,8 +59,9 @@ The **Context** property in DataLabelSettings defines what value to display:
 
 1. **YValue** (default) - Shows the numeric value
 2. **Percentage** - Shows percentage of total
-3. **DataLabelItem** - Shows X-axis category name
-4. **XValue** - Shows X-axis value
+3. **XValue** - Shows X-axis value
+4. **DataLabelItem** - Use the value of the `ChartDataLabel.Item` property. This allows supplying a custom object or pre-formatted text for the label.
+5. **DateTime** - Display the DateTime value when the underlying series uses date/time values for X or Y.
 
 ### Percentage Labels
 
@@ -171,7 +172,6 @@ chart.Series.Add(series);
 - **FontSize** - Text size
 - **FontFamily** - Font typeface
 - **FontStyle** - Normal, Italic, Oblique
-- **FontWeight** - Normal, Bold, etc.
 - **Background** - Label background color
 - **BorderBrush** - Border color
 - **BorderThickness** - Border width
@@ -179,12 +179,6 @@ chart.Series.Add(series);
 - **Padding** - Internal spacing
 
 ### Simple Styling Examples
-
-**Bold labels:**
-```xml
-<chart:CircularDataLabelSettings FontWeight="Bold"
-                               FontSize="14"/>
-```
 
 **Colored background:**
 ```xml
@@ -218,7 +212,6 @@ Create completely custom label layouts using **ContentTemplate**:
                 <TextBlock HorizontalAlignment="Center"
                           FontSize="12"
                           Foreground="Black"
-                          FontWeight="SemiBold"
                           Text="{Binding Item.Product}"/>
             </StackPanel>
         </DataTemplate>
@@ -257,9 +250,25 @@ chart.Series.Add(series);
 
 ### Template Binding Context
 
-The binding context provides access to:
-- **Item** - The data model object
-- **Item.PropertyName** - Specific properties from your model
+The binding context available inside `ContentTemplate` depends on the selected `Context` value:
+
+| Context | Binding Value |
+|---------|---------------|
+| `YValue` | Numeric Y value |
+| `XValue` | X-axis/category value (string or numeric) |
+| `Percentage` | Percentage string (e.g., "35.8%") |
+| `DataLabelItem` | The value set on `ChartDataLabel.Item` (object or string); use `Item`/`Item.PropertyName` to access model fields |
+| `DateTime` | DateTime value |
+
+Examples:
+
+```xml
+<!-- When Context="YValue" -->
+<TextBlock Text="{Binding}"/>
+
+<!-- When Context="DataLabelItem" and Item is provided in template -->
+<TextBlock Text="{Binding Item.Product}"/>
+```
 
 ### Advanced Template Examples
 
@@ -679,10 +688,3 @@ series.DataLabelSettings = new CircularDataLabelSettings()
     </chart:SfCircularChart>
 </Grid>
 ```
-
-## Related Resources
-
-- **Tooltips** - See `tooltips.md` for hover information
-- **Legend** - See `legend.md` for segment identification
-- **Appearance** - See `appearance.md` for color coordination
-- **Pie Charts** - See `pie-charts.md` for chart-specific features

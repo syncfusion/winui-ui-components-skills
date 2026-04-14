@@ -68,7 +68,6 @@ Add a title or header to the legend using the **Header** property.
             <chart:ChartLegend.Header>
                 <TextBlock Text="Products"
                           HorizontalAlignment="Center"
-                          FontWeight="Bold"
                           Foreground="Blue"/>
             </chart:ChartLegend.Header>
         </chart:ChartLegend>
@@ -86,7 +85,6 @@ TextBlock textBlock = new TextBlock()
     Text = "Products",
     HorizontalTextAlignment = TextAlignment.Center,
     Foreground = new SolidColorBrush(Colors.Blue),
-    FontWeight = FontWeights.Bold
 };
 
 legend.Header = textBlock;
@@ -594,10 +592,3 @@ The binding context for ItemTemplate is **LegendItem**, which provides:
     </chart:SfCircularChart>
 </Grid>
 ```
-
-## Related Resources
-
-- **Tooltips** - See `tooltips.md` for hover information
-- **Data Labels** - See `data-labels.md` for on-chart labels
-- **Selection** - See `selection.md` for interactive selection
-- **Appearance** - See `appearance.md` for color coordination

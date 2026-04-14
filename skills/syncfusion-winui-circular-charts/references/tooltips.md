@@ -138,7 +138,6 @@ Customize tooltip background using the **Style** property:
         <Style TargetType="Path" x:Key="tooltipStyle">
             <Setter Property="Stroke" Value="Black"/>
             <Setter Property="Fill" Value="LightBlue"/>
-            <Setter Property="StrokeThickness" Value="2"/>
         </Style>
     </chart:SfCircularChart.Resources>
     
@@ -158,8 +157,6 @@ Customize tooltip background using the **Style** property:
 Style tooltipStyle = new Style(typeof(Path));
 tooltipStyle.Setters.Add(new Setter(Path.StrokeProperty, new SolidColorBrush(Colors.Black)));
 tooltipStyle.Setters.Add(new Setter(Path.FillProperty, new SolidColorBrush(Colors.LightBlue)));
-tooltipStyle.Setters.Add(new Setter(Path.StrokeThicknessProperty, 2));
-
 ChartTooltipBehavior tooltip = new ChartTooltipBehavior();
 tooltip.Style = tooltipStyle;
 
@@ -173,7 +170,6 @@ chart.TooltipBehavior = tooltip;
 <Style TargetType="Path" x:Key="darkTooltip">
     <Setter Property="Fill" Value="#333333"/>
     <Setter Property="Stroke" Value="#666666"/>
-    <Setter Property="StrokeThickness" Value="1"/>
 </Style>
 ```
 
@@ -182,7 +178,6 @@ chart.TooltipBehavior = tooltip;
 <Style TargetType="Path" x:Key="colorfulTooltip">
     <Setter Property="Fill" Value="Orange"/>
     <Setter Property="Stroke" Value="DarkOrange"/>
-    <Setter Property="StrokeThickness" Value="2"/>
 </Style>
 ```
 
@@ -206,7 +201,6 @@ Customize tooltip text using the **LabelStyle** property:
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontStyle" Value="Italic"/>
-            <Setter Property="FontWeight" Value="Bold"/>
         </Style>
     </chart:SfCircularChart.Resources>
     
@@ -227,7 +221,6 @@ Style labelStyle = new Style(typeof(TextBlock));
 labelStyle.Setters.Add(new Setter(TextBlock.FontSizeProperty, 14d));
 labelStyle.Setters.Add(new Setter(TextBlock.FontStyleProperty, FontStyles.Italic));
 labelStyle.Setters.Add(new Setter(TextBlock.ForegroundProperty, new SolidColorBrush(Colors.White)));
-labelStyle.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.Bold));
 
 ChartTooltipBehavior tooltip = new ChartTooltipBehavior();
 tooltip.LabelStyle = labelStyle;
@@ -239,8 +232,7 @@ chart.TooltipBehavior = tooltip;
 
 - **FontSize** - Text size
 - **FontFamily** - Font typeface
-- **FontWeight** - Normal, Bold, etc.
-- **FontStyle** - Normal, Italic, Oblique
+- **FontStyle** - Italic
 - **Foreground** - Text color
 
 ### Combined Background and Label Styling
@@ -604,10 +596,3 @@ The binding context is **ChartSegment**, which provides:
     </chart:SfCircularChart.Series>
 </chart:SfCircularChart>
 ```
-
-## Related Resources
-
-- **Data Labels** - See `data-labels.md` for persistent labels
-- **Legend** - See `legend.md` for segment identification
-- **Selection** - See `selection.md` for interactive selection
-- **Appearance** - See `appearance.md` for color coordination
