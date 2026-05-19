@@ -283,22 +283,22 @@ Show visual lines connecting parent and child nodes.
 
 ```xml
 <treeView:SfTreeView ShowLines="True" 
-                      LinesBrush="LightGray"
-                      LinesThickness="1" />
+                      LineStroke="LightGray"
+                      LineStrokeThickness="1" />
 ```
 
 ```csharp
 treeView.ShowLines = true;
-treeView.LinesBrush = new SolidColorBrush(Colors.LightGray);
-treeView.LinesThickness = 1;
+treeView.LineStroke = new SolidColorBrush(Colors.LightGray);
+treeView.LineStrokeThickness = 1;
 ```
 
 ### Custom Line Style
 
 ```xml
 <treeView:SfTreeView ShowLines="True" 
-                      LinesBrush="#CCCCCC"
-                      LinesThickness="2" />
+                      LineStroke="#CCCCCC"
+                      LineStrokeThickness="2" />
 ```
 
 ## Styling
@@ -306,11 +306,11 @@ treeView.LinesThickness = 1;
 ### Indentation
 
 ```xml
-<treeView:SfTreeView IndentationWidth="24" />
+<treeView:SfTreeView Indentation="24" />
 ```
 
 ```csharp
-treeView.IndentationWidth = 24;
+treeView.Indentation = 24;
 ```
 
 ### Expander Width
@@ -381,7 +381,7 @@ this.RequestedTheme = ElementTheme.Dark;
 
 ```xml
 <treeView:SfTreeView ShowLines="False"
-                      IndentationWidth="20"
+                      Indentation="20"
                       FullRowSelect="True"
                       SelectionBackgroundColor="#E5F3FF">
     <treeView:SfTreeView.ItemTemplate>
@@ -420,7 +420,7 @@ this.RequestedTheme = ElementTheme.Dark;
 ### Scenario 2: Modern Card Style
 
 ```xml
-<treeView:SfTreeView IndentationWidth="32" 
+<treeView:SfTreeView Indentation="32" 
                       ItemHeight="72">
     <treeView:SfTreeView.ItemTemplate>
         <DataTemplate>
@@ -463,7 +463,7 @@ this.RequestedTheme = ElementTheme.Dark;
 
 ```xml
 <treeView:SfTreeView ItemHeight="24"
-                      IndentationWidth="16"
+                      Indentation="16"
                       ExpanderWidth="16">
     <treeView:SfTreeView.ItemTemplate>
         <DataTemplate>
@@ -529,7 +529,7 @@ this.RequestedTheme = ElementTheme.Dark;
 5. **Enable TreeLines** for clarity in deep hierarchies
 6. **Match system theme** for consistency
 7. **Test both Light and Dark themes**
-8. **Provide adequate spacing** (IndentationWidth)
+8. **Provide adequate spacing** (Indentation)
 9. **Use icons** to differentiate node types
 10. **Ensure touch targets** are at least 44x44px
 

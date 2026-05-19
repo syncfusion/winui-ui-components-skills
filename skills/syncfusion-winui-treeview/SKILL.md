@@ -287,8 +287,7 @@ public class FileNode : INotifyPropertyChanged
 ### Pattern 3: Load on Demand
 
 ```xml
-<treeView:SfTreeView LoadOnDemand="True"
-                      LoadOnDemandCommand="{Binding LoadChildrenCommand}">
+<treeView:SfTreeView LoadOnDemandCommand="{Binding LoadChildrenCommand}">
     <!-- Children load only when node expands -->
 </treeView:SfTreeView>
 ```

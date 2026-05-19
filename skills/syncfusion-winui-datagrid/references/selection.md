@@ -72,7 +72,7 @@ sfDataGrid.SelectedItems.Add(orders[5]);
 sfDataGrid.SelectAll();
 
 // Clear selection
-sfDataGrid.ClearSelections();
+sfDataGrid.ClearSelections(false);
 sfDataGrid.SelectedItems.Clear();
 ```
 

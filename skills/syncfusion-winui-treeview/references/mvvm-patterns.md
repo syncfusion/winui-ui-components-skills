@@ -284,7 +284,7 @@ public class FileViewModel : INotifyPropertyChanged
 ### XAML Command Binding
 
 ```xml
-<treeView:SfTreeView.ContextFlyout>
+<treeView:SfTreeView.ItemContextFlyout>
     <MenuFlyout>
         <MenuFlyoutItem Text="Open" 
                         Command="{Binding OpenCommand}" />
@@ -294,7 +294,7 @@ public class FileViewModel : INotifyPropertyChanged
         <MenuFlyoutItem Text="Delete" 
                         Command="{Binding DeleteCommand}" />
     </MenuFlyout>
-</treeView:SfTreeView.ContextFlyout>
+</treeView:SfTreeView.ItemContextFlyout>
 ```
 
 ### LoadOnDemand Command
@@ -339,8 +339,7 @@ public class FileViewModel : INotifyPropertyChanged
 ```
 
 ```xml
-<treeView:SfTreeView LoadOnDemand="True"
-                      LoadOnDemandCommand="{Binding LoadChildrenCommand}" />
+<treeView:SfTreeView LoadOnDemandCommand="{Binding LoadChildrenCommand}" />
 ```
 
 ## ViewModel Design

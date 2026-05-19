@@ -115,14 +115,14 @@ sfTreeGrid.SelectionChanged += (sender, e) =>
     // Get newly selected items
     foreach (var item in e.AddedItems)
     {
-        var employee = item.RowData as Employee;
+        var employee = item as Employee;
         Console.WriteLine($"Selected: {employee.FirstName}");
     }
     
     // Get unselected items
     foreach (var item in e.RemovedItems)
     {
-        var employee = item.RowData as Employee;
+        var employee = item as Employee;
         Console.WriteLine($"Deselected: {employee.FirstName}");
     }
 };
@@ -349,20 +349,24 @@ private void DeleteSelectedItems()
 ### Select on Right-Click
 
 ```csharp
-sfTreeGrid.RightTapped += (sender, e) =>
+sfTreeGrid.RightTapped += (s, e) =>
 {
     var position = e.GetPosition(sfTreeGrid);
-    var rowColumnIndex = sfTreeGrid.GetRowColumnIndexAtPoint(position);
-    
-    if (rowColumnIndex.RowIndex > 0)
+
+    var elements = VisualTreeHelper.FindElementsInHostCoordinates(position, sfTreeGrid);
+            
+    foreach (var element in elements)
     {
-        var node = sfTreeGrid.GetNodeAtRowIndex(rowColumnIndex.RowIndex);
-        if (node != null)
+        if (element is TreeGridRowControl rowControl)
         {
-            sfTreeGrid.SelectedItem = node.Item;
+            var data = rowControl.DataContext;
+
+            sfTreeGrid.SelectedItem = data;
+            break;
         }
     }
 };
+
 ```
 
 ### Prevent Selection of Specific Rows
@@ -372,7 +376,7 @@ sfTreeGrid.SelectionChanging += (sender, e) =>
 {
     foreach (var item in e.AddedItems)
     {
-        var employee = item.RowData as Employee;
+        var employee = item as Employee;
         
         // Prevent selection of admin users
         if (employee.Role == "Admin")
@@ -399,7 +403,7 @@ private void SaveSelection()
 
 private void RestoreSelection()
 {
-    sfTreeGrid.ClearSelections();
+    sfTreeGrid.ClearSelections(true);
     
     foreach (var node in sfTreeGrid.View.Nodes)
     {

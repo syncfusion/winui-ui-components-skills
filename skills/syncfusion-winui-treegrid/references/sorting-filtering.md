@@ -36,7 +36,7 @@ Define initial sorting programmatically:
 sfTreeGrid.SortColumnDescriptions.Add(new SortColumnDescription
 {
     ColumnName = "FirstName",
-    SortDirection = ListSortDirection.Ascending
+    SortDirection = SortDirection.Ascending
 });
 ```
 
@@ -57,12 +57,12 @@ Sort by multiple columns (hold Ctrl while clicking headers):
 sfTreeGrid.SortColumnDescriptions.Add(new SortColumnDescription
 {
     ColumnName = "Department",
-    SortDirection = ListSortDirection.Ascending
+    SortDirection = SortDirection.Ascending
 });
 sfTreeGrid.SortColumnDescriptions.Add(new SortColumnDescription
 {
     ColumnName = "Salary",
-    SortDirection = ListSortDirection.Descending
+    SortDirection = SortDirection.Descending
 });
 ```
 
@@ -170,40 +170,23 @@ sfTreeGrid.AllowFiltering = true;
                             AllowFiltering="False" />
 ```
 
-### Filter Row
-
-Show a dedicated filter row below headers:
-
-```csharp
-sfTreeGrid.FilterRowPosition = FilterRowPosition.FixedTop;
-```
-
-| Position | Description |
-|----------|-------------|
-| **None** (default) | No filter row |
-| **FixedTop** | Filter row below headers |
-| **Bottom** | Filter row at bottom |
-
-### Filter Predicates
-
 Define filters programmatically:
 
 ```csharp
 // Add text filter
-sfTreeGrid.FilterPredicates.Add(new FilterPredicate
+sfTreeGrid.Columns["FirstName"].FilterPredicates.Add(new FilterPredicate
 {
-    ColumnName = "FirstName",
     FilterType = FilterType.Contains,
     FilterValue = "John"
 });
 
 // Add numeric filter
-sfTreeGrid.FilterPredicates.Add(new FilterPredicate
+sfTreeGrid.Columns["Salary"].FilterPredicates.Add(new FilterPredicate
 {
-    ColumnName = "Salary",
     FilterType = FilterType.GreaterThan,
     FilterValue = 50000
 });
+
 ```
 
 ### Filter Types
@@ -238,18 +221,22 @@ sfTreeGrid.FilterBehavior = FilterBehavior.StronglyTyped;
 **FilterChanging** - Before filter applied:
 
 ```csharp
-sfTreeGrid.FilterChanging += (sender, e) =>
+sfTreeGrid.FilterChanging += (s, e) =>
 {
-    // Cancel filtering for specific column
-    if (e.FilterPredicates[0].ColumnName == "ID")
+    if (e.FilterPredicates == null || e.FilterPredicates.Count == 0)
+        return;
+
+    // Prevent filtering for specific column
+    if (e.Column.MappingName == "ID")
     {
-        e.Cancel = true;
+        e.Handled = true;
         ShowMessage("Cannot filter by ID");
+        return;
     }
-    
+
     // Log filter action
     var filter = e.FilterPredicates[0];
-    Log($"Filtering {filter.ColumnName} by {filter.FilterType}");
+    Log($"Filtering {e.Column.MappingName} by {filter.FilterType}");
 };
 ```
 
@@ -265,46 +252,19 @@ sfTreeGrid.FilterChanged += (sender, e) =>
 
 ### Advanced Filter Options
 
-**Filter Mode:**
+### Filter Mode
+
+Filter UI can be customized using the `FilterItemsPopulating` event.
 
 ```csharp
-sfTreeGrid.FilterMode = FilterMode.Advanced;
-// or
-sfTreeGrid.FilterMode = FilterMode.Simple;
-```
-
-**Filter Delay:**
-
-```csharp
-// Set delay before filter applies (in ms)
-sfTreeGrid.FilterDelay = 500;
-```
-
-### Multiple Filter Conditions
-
-Combine multiple filters with AND/OR:
-
-```csharp
-var filterPredicates = new FilterPredicates();
-
-// Add first condition
-filterPredicates.Add(new FilterPredicate
+sfTreeGrid.FilterItemsPopulating += (s, e) =>
 {
-    ColumnName = "Department",
-    FilterType = FilterType.Equals,
-    FilterValue = "Sales"
-});
-
-// Add second condition with AND logic
-filterPredicates.Add(new FilterPredicate
-{
-    ColumnName = "Salary",
-    FilterType = FilterType.GreaterThan,
-    FilterValue = 60000,
-    FilterOperator = FilterOperator.And
-});
-
-sfTreeGrid.FilterPredicates = filterPredicates;
+    // Apply Advanced filter UI for specific column
+    if (e.Column.MappingName == "EmployeeID")
+    {
+        e.FilterControl.FilterMode = FilterMode.Advanced;
+    }
+};
 ```
 
 ### Clear Filters
@@ -314,9 +274,15 @@ sfTreeGrid.FilterPredicates = filterPredicates;
 sfTreeGrid.ClearFilters();
 
 // Or clear specific column filter
-sfTreeGrid.FilterPredicates.Remove(
-    sfTreeGrid.FilterPredicates.First(f => f.ColumnName == "Department")
-);
+var column = sfTreeGrid.Columns["Department"];
+
+var predicate = column.FilterPredicates
+                      .FirstOrDefault(p => p.FilterValue?.ToString() == "SomeValue");
+
+if (predicate != null)
+{
+    column.FilterPredicates.Remove(predicate);
+}
 ```
 
 ### Custom Filter UI
@@ -324,15 +290,17 @@ sfTreeGrid.FilterPredicates.Remove(
 Customize filter popup using events:
 
 ```csharp
-sfTreeGrid.FilterItemsPopulating += (sender, e) =>
+sfTreeGrid.FilterItemsPopulating += (s, e) =>
 {
-    // Customize filter items
-    if (e.Column.MappingName == "Status")
+    if (e.Column.MappingName != "Status") return;
+        e.ItemsSource = new List<FilterElement>
     {
-        // Show only specific filter options
-        e.FilterItems = new List<string> { "Active", "Inactive", "Pending" };
-    }
+        new FilterElement { ActualValue = "Active" },
+        new FilterElement { ActualValue = "Inactive" },
+        new FilterElement { ActualValue = "Pending" }
+    };
 };
+
 ```
 
 ## Common Patterns
@@ -348,7 +316,7 @@ private void LoadData()
     sfTreeGrid.SortColumnDescriptions.Add(new SortColumnDescription
     {
         ColumnName = "LastName",
-        SortDirection = ListSortDirection.Ascending
+        SortDirection = SortDirection.Ascending
     });
 }
 ```
@@ -357,9 +325,9 @@ private void LoadData()
 
 ```csharp
 // Filter for managers
-sfTreeGrid.FilterPredicates.Add(new FilterPredicate
+
+sfTreeGrid.Columns["Title"].FilterPredicates.Add(new FilterPredicate
 {
-    ColumnName = "Title",
     FilterType = FilterType.Contains,
     FilterValue = "Manager"
 });
@@ -368,27 +336,29 @@ sfTreeGrid.FilterPredicates.Add(new FilterPredicate
 sfTreeGrid.SortColumnDescriptions.Add(new SortColumnDescription
 {
     ColumnName = "Salary",
-    SortDirection = ListSortDirection.Descending
+    SortDirection = SortDirection.Descending
 });
 ```
 
 ### Save/Restore Filter State
 
 ```csharp
-private List<FilterPredicate> savedFilters;
 
-private void SaveFilters()
-{
-    savedFilters = new List<FilterPredicate>(sfTreeGrid.FilterPredicates);
-}
+Dictionary<string, List<FilterPredicate>> savedFilters = new();
 
-private void RestoreFilters()
+void SaveFilters() => savedFilters = sfTreeGrid.Columns
+                    .Where(c => c.FilterPredicates?.Count > 0)
+                    .ToDictionary(
+                        c => c.MappingName,
+                        c => c.FilterPredicates.ToList()
+                    );
+
+void RestoreFilters()
 {
-    sfTreeGrid.FilterPredicates.Clear();
-    foreach (var filter in savedFilters)
-    {
-        sfTreeGrid.FilterPredicates.Add(filter);
-    }
+    sfTreeGrid.ClearFilters();
+
+    foreach (var (key, value) in savedFilters)
+        value.ForEach(p => sfTreeGrid.Columns[key].FilterPredicates.Add(p));
 }
 ```
 
@@ -405,27 +375,29 @@ private void RestoreFilters()
 ```csharp
 private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
 {
-    var searchText = FilterTextBox.Text;
-    
-    sfTreeGrid.FilterPredicates.Clear();
-    
-    if (!string.IsNullOrEmpty(searchText))
+    var text = FilterTextBox.Text;
+
+    // Clear previous filters
+    sfTreeGrid.ClearFilters();
+
+    if (string.IsNullOrWhiteSpace(text))
+        return;
+
+    // Apply filter on FirstName
+    sfTreeGrid.Columns["FirstName"].FilterPredicates.Add(new FilterPredicate
     {
-        sfTreeGrid.FilterPredicates.Add(new FilterPredicate
-        {
-            ColumnName = "FirstName",
-            FilterType = FilterType.Contains,
-            FilterValue = searchText,
-            FilterOperator = FilterOperator.Or
-        });
-        sfTreeGrid.FilterPredicates.Add(new FilterPredicate
-        {
-            ColumnName = "LastName",
-            FilterType = FilterType.Contains,
-            FilterValue = searchText,
-            FilterOperator = FilterOperator.Or
-        });
-    }
+        FilterType = FilterType.Contains,
+        FilterValue = text,
+        PredicateType = PredicateType.Or
+    });
+
+    // Apply filter on LastName
+    sfTreeGrid.Columns["LastName"].FilterPredicates.Add(new FilterPredicate
+    {
+        FilterType = FilterType.Contains,
+        FilterValue = text,
+        PredicateType = PredicateType.Or
+    });
 }
 ```
 
@@ -434,16 +406,16 @@ private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
 ```csharp
 using (sfTreeGrid.View.DeferRefresh(TreeViewRefreshMode.NodeRefresh))
 {
-    // Add multiple sorts and filters
+    // Add sort
     sfTreeGrid.SortColumnDescriptions.Add(new SortColumnDescription
     {
         ColumnName = "Department",
-        SortDirection = ListSortDirection.Ascending
+        SortDirection = SortDirection.Ascending
     });
-    
-    sfTreeGrid.FilterPredicates.Add(new FilterPredicate
+
+    // Apply filter on Status column
+    sfTreeGrid.Columns["Status"].FilterPredicates.Add(new FilterPredicate
     {
-        ColumnName = "Status",
         FilterType = FilterType.Equals,
         FilterValue = "Active"
     });

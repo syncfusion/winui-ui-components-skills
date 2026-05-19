@@ -393,18 +393,6 @@ sfDataGrid.View.RecordPropertyChanged += (sender, e) =>
 };
 ```
 
-**CollectionChanged:**
-```csharp
-sfDataGrid.View.CollectionChanged += (sender, e) =>
-{
-    var action = e.Action;  // Add, Remove, Move, Replace, Reset
-    var newItems = e.NewItems;
-    var oldItems = e.OldItems;
-    
-    Debug.WriteLine($"Collection changed: {action}");
-};
-```
-
 **SourceCollectionChanged:**
 ```csharp
 sfDataGrid.View.SourceCollectionChanged += (sender, e) =>

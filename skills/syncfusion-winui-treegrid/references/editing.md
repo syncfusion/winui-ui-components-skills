@@ -60,8 +60,8 @@ sfTreeGrid.CurrentCellBeginEdit += (sender, e) =>
     }
     
     // Cancel editing for specific rows
-    var employee = e.DataRow.RowData as Employee;
-    if (employee.IsReadOnly)
+    int rowIndex = e.RowColumnIndex.RowIndex;
+    if (rowIndex == 1)
     {
         e.Cancel = true;
     }
@@ -70,7 +70,7 @@ sfTreeGrid.CurrentCellBeginEdit += (sender, e) =>
 
 **Event Args Properties:**
 - `e.Column` - Column being edited
-- `e.DataRow` - Row data
+- `e.RowColumnIndex` - Gets the row and column index of the current cell
 - `e.Cancel` - Set to true to prevent editing
 
 ### CurrentCellEndEdit
@@ -80,24 +80,26 @@ Raised before changes are committed. Validate or cancel the edit.
 ```csharp
 sfTreeGrid.CurrentCellEndEdit += (sender, e) =>
 {
-    // Validate the new value
-    if (e.Column.MappingName == "Salary")
+    int rowIndex = e.RowColumnIndex.RowIndex;
+    int columnIndex = e.RowColumnIndex.ColumnIndex;
+
+    var column = sfTreeGrid.Columns[columnIndex];
+
+    if (column.MappingName == "Salary")
     {
-        var salary = Convert.ToDouble(e.NewValue);
-        if (salary < 0)
+        if (double.TryParse(e.NewValue?.ToString(), out double salary))
         {
-            e.Cancel = true;
-            // Show error message
-            return;
+            if (salary < 0)
+            {
+                e.Cancel = true;
+            }
         }
     }
 };
 ```
 
 **Event Args Properties:**
-- `e.Column` - Column being edited
-- `e.NewValue` - New value entered
-- `e.OldValue` - Original value
+- `e.RowColumnIndex` : Gets row and column index
 - `e.Cancel` - Set to true to reject changes
 
 ### CurrentCellValueChanged
@@ -107,14 +109,27 @@ Raised after the cell value changes:
 ```csharp
 sfTreeGrid.CurrentCellValueChanged += (sender, e) =>
 {
-    // Log changes
     var column = e.Column.MappingName;
-    var oldValue = e.OldValue;
-    var newValue = e.NewValue;
-    
-    Logger.Log($"Changed {column} from {oldValue} to {newValue}");
+    var record = e.Record;
+    var rowIndex = e.RowColumnIndex.RowIndex;
+
+    Logger.Log($"Value changed in {column} at row {rowIndex}");
 };
 ```
+### CurrentCellDropDownSelectionChanged
+
+Raised when the selected item changes in a dropdown cell.
+
+```csharp
+sfTreeGrid.CurrentCellDropDownSelectionChanged += (sender, e) =>
+{
+    int rowIndex = e.RowColumnIndex.RowIndex;
+    var selectedIndex = e.SelectedIndex;
+    var selectedItem = e.SelectedItem;
+
+    Logger.Log($"Row {rowIndex} selected index {selectedIndex}");
+};
+``
 
 ## Column-Level Editing
 
@@ -152,14 +167,17 @@ column.AllowEditing = false;  // Make column read-only
 ### Begin Edit Programmatically
 
 ```csharp
-// Begin edit at row index and column index
-sfTreeGrid.BeginEdit(rowIndex: 2, columnIndex: 1);
+// Begin edit at specified row and column index
+var rowColumnIndex = new RowColumnIndex(2, 1);
+sfTreeGrid.SelectionController.MoveCurrentCell(rowColumnIndex);
+sfTreeGrid.SelectionController.CurrentCellManager.BeginEdit();
 
-// Or get current cell
-var currentCell = sfTreeGrid.SelectionController.CurrentCellManager.CurrentCell;
-if (currentCell != null)
+// Or get current cell and begin edit
+var currentCellManager = sfTreeGrid.SelectionController.CurrentCellManager;
+
+if (currentCellManager != null)
 {
-    sfTreeGrid.BeginEdit(currentCell.RowIndex, currentCell.ColumnIndex);
+    currentCellManager.BeginEdit();
 }
 ```
 
@@ -183,16 +201,25 @@ if (sfTreeGrid.CurrentCell != null)
 ### Cancel Edit
 
 ```csharp
-// Cancel current edit without committing
-sfTreeGrid.CancelEdit();
+sfTreeGrid.CurrentCellBeginEdit += (sender, e) =>
+{
+    // Cancel editing for specific cell
+    if (e.RowColumnIndex.RowIndex == 2 && e.RowColumnIndex.ColumnIndex == 2)
+    {
+        e.Cancel = true;
+    }
+};
 ```
+
 
 ### Check if Cell is in Edit Mode
 
 ```csharp
-if (sfTreeGrid.IsCurrentCellInEditing)
-{
-    // Cell is currently being edited
+```csharp
+var currentCellManager = this.treeGrid.SelectionController.CurrentCellManager;
+if (currentCellManager != null && currentCellManager.CurrentCell.IsEditing)
+{   
+     // Cell is currently being edited
 }
 ```
 
@@ -221,35 +248,36 @@ public class Employee
 
 ### Custom Validation in Events
 
+#### Cell Validation
 ```csharp
-sfTreeGrid.CurrentCellEndEdit += (sender, e) =>
+sfTreeGrid.CurrentCellValidating += (s, e) =>
 {
-    if (e.Column.MappingName == "Email")
+    // Email validation
+    if (e.RowColumnIndex.ColumnIndex == 2 && !IsValidEmail(e.NewValue?.ToString()))
     {
-        var email = e.NewValue?.ToString();
-        if (!IsValidEmail(email))
-        {
-            e.Cancel = true;
-            ShowErrorMessage("Please enter a valid email address");
-        }
+        e.IsValid = false;
+        e.ErrorMessage = "Invalid email";
     }
-    
-    if (e.Column.MappingName == "Salary")
+
+    // Salary validation
+    if (e.RowColumnIndex.ColumnIndex == 3)
     {
-        var employee = e.DataRow.RowData as Employee;
-        var salary = Convert.ToDouble(e.NewValue);
-        
-        // Business rule: Manager salary must be > 50000
-        if (employee.Title == "Manager" && salary <= 50000)
+        var node = sfTreeGrid.View.GetNodeAt(e.RowColumnIndex.RowIndex);
+        var data = node?.Item as Employee;
+
+        if (data != null && data.Title == "Manager" && Convert.ToDouble(e.NewValue) <= 50000)
         {
-            e.Cancel = true;
-            ShowErrorMessage("Manager salary must exceed $50,000");
+            e.IsValid = false;
+            e.ErrorMessage = "Salary must be > 50,000";
         }
     }
 };
-
+// Email helper
 private bool IsValidEmail(string email)
 {
+    if (string.IsNullOrWhiteSpace(email))
+        return false;
+
     try
     {
         var addr = new System.Net.Mail.MailAddress(email);
@@ -262,40 +290,48 @@ private bool IsValidEmail(string email)
 }
 ```
 
-### Cell Validation
 
-Implement `IDataErrorInfo` or `INotifyDataErrorInfo` in your model:
+#### Row Validation
+
+```csharp
+
+sfTreeGrid.RowValidating += (s, e) =>
+{
+    var data = e.RowData as Employee;
+
+    if (data != null && data.Title == "Manager" && data.Salary <= 50000)
+    {
+        e.IsValid = false;
+        e.ErrorMessages.Add("Salary", "Salary must be > 50,000");
+    }
+};
+
+```
+
+
+### Built-in Validation using Interfaces
+
+Implement `INotifyDataErrorInfo` in your model:
+
 
 ```csharp
 using System.ComponentModel;
 
-public class Employee : IDataErrorInfo
+public class Employee : INotifyDataErrorInfo
 {
-    public string FirstName { get; set; }
-    public double Salary { get; set; }
-    
-    public string Error => null;
-    
-    public string this[string columnName]
+    public string Title { get; set; }
+
+    public IEnumerable GetErrors(string propertyName)
     {
-        get
-        {
-            string result = null;
-            
-            if (columnName == "FirstName")
-            {
-                if (string.IsNullOrWhiteSpace(FirstName))
-                    result = "First name is required";
-            }
-            else if (columnName == "Salary")
-            {
-                if (Salary < 0)
-                    result = "Salary cannot be negative";
-            }
-            
-            return result;
-        }
+        if (propertyName == "Title" && Title == "Invalid")
+            return new List<string> { "Invalid title" };
+
+        return null;
     }
+
+    public bool HasErrors => false;
+
+    public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 }
 ```
 
@@ -319,9 +355,7 @@ Numeric editor with constraints:
 ```xaml
 <treeGrid:TreeGridNumericColumn MappingName="Salary"
                                MinValue="0"
-                               MaxValue="10000000"
-                               Step="1000"
-                               NumberDecimalDigits="2" />
+                               MaxValue="10000000" />
 ```
 
 ### TreeGridDateColumn - SfCalendarDatePicker
@@ -339,8 +373,7 @@ Date picker editor:
 Time picker editor:
 
 ```xaml
-<treeGrid:TreeGridTimeColumn MappingName="ShiftStartTime"
-                            ClockIdentifier="12HourClock" />
+<treeGrid:TreeGridTimeColumn MappingName="ShiftStartTime" />
 ```
 
 ### TreeGridCheckBoxColumn - CheckBox
@@ -390,14 +423,20 @@ Provide custom edit template:
 Make certain rows read-only based on data:
 
 ```csharp
-sfTreeGrid.CurrentCellBeginEdit += (sender, e) =>
+sfTreeGrid.CurrentCellBeginEdit += (s, e) =>
 {
-    var employee = e.DataRow.RowData as Employee;
-    if (employee.Status == "Archived")
+    var node = sfTreeGrid.View.GetNodeAt(e.RowColumnIndex.RowIndex);
+    var data = node?.Item as Employee;
+
+    if (data == null) return;
+
+    // Disable editing for archived records
+    if (data.Status == "Archived")
     {
         e.Cancel = true;
     }
 };
+
 ```
 
 ### Conditional Column Editing
@@ -407,15 +446,19 @@ Allow editing only when conditions are met:
 ```csharp
 sfTreeGrid.CurrentCellBeginEdit += (sender, e) =>
 {
-    var employee = e.DataRow.RowData as Employee;
-    
-    // Only managers can edit salary
+    var node = sfTreeGrid.View.GetNodeAt(e.RowColumnIndex.RowIndex);
+    var data = node?.Item as Employee;
+
+    if (data == null) return;
+
+    // Only managers can edit Salary column
     if (e.Column.MappingName == "Salary" && !CurrentUser.IsManager)
     {
         e.Cancel = true;
         ShowMessage("Only managers can edit salary");
     }
 };
+
 ```
 
 ### Auto-Save on Edit
@@ -423,13 +466,14 @@ sfTreeGrid.CurrentCellBeginEdit += (sender, e) =>
 Automatically save changes to database:
 
 ```csharp
-sfTreeGrid.CurrentCellEndEdit += async (sender, e) =>
+sfTreeGrid.CurrentCellEndEdit += async (s, e) =>
 {
-    if (!e.Cancel)
-    {
-        var employee = e.DataRow.RowData as Employee;
-        await SaveToDatabase(employee);
-    }
+    var node = sfTreeGrid.View.GetNodeAt(e.RowColumnIndex.RowIndex);
+    var employee = node?.Item as Employee;
+
+    if (employee == null) return;
+
+    await SaveToDatabase(employee);
 };
 ```
 
@@ -440,11 +484,14 @@ Monitor which cells have been edited:
 ```csharp
 private HashSet<string> modifiedRows = new HashSet<string>();
 
-sfTreeGrid.CurrentCellValueChanged += (sender, e) =>
+sfTreeGrid.CurrentCellValueChanged += (s, e) =>
 {
-    var employee = e.DataRow.RowData as Employee;
+    var employee = e.Record as Employee;
+
+    if (employee == null) return;
+
     modifiedRows.Add(employee.ID.ToString());
-    
+
     // Mark row as modified (visual indicator)
     employee.IsModified = true;
 };

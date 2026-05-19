@@ -20,7 +20,7 @@ Complete guide to exporting DataGrid data to Excel format (.xlsx) with styling a
 ### Export to Excel
 
 ```csharp
-using Syncfusion.UI.Xaml.DataGrid.Exporting;
+using Syncfusion.UI.Xaml.DataGrid.Export;
 using Syncfusion.XlsIO;
 
 private async void ExportToExcel_Click(object sender, RoutedEventArgs e)
@@ -153,14 +153,6 @@ var options = new DataGridExcelExportOptions
 ```
 
 ### Add Borders
-
-```csharp
-CellsExportingEventHandler = (sender, e) =>
-{
-    e.Range.BorderAround();
-    e.Range.BorderInside(ExcelLineStyle.Thin);
-}
-```
 
 ## Export Selected Rows
 

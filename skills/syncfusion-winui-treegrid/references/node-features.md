@@ -46,38 +46,26 @@ sfTreeGrid.RecursiveCheckingMode = RecursiveCheckingMode.Default;
 
 ### NodeCheckState Events
 
-**NodeCheckStateChanging** - Before checkbox state changes:
-
-```csharp
-sfTreeGrid.NodeCheckStateChanging += (sender, e) =>
-{
-    var node = e.Node;
-    var employee = node.Item as Employee;
-    
-    // Prevent checking certain nodes
-    if (employee.Status == "Archived")
-    {
-        e.Cancel = true;
-        ShowMessage("Cannot select archived employees");
-    }
-};
-```
-
 **NodeCheckStateChanged** - After checkbox state changes:
 
 ```csharp
-sfTreeGrid.NodeCheckStateChanged += (sender, e) =>
+sfTreeGrid.NodeCheckStateChanged += (s, e) =>
 {
     var node = e.Node;
-    var newState = e.NewState;
-    var employee = node.Item as Employee;
-    
-    Log($"Checkbox for {employee.FirstName} changed to {newState}");
-    
-    // Update status label
+    var employee = node?.Item as Employee;
+
+    if (employee == null) return;
+
+    // Get check state from node itself
+    var isChecked = node.IsChecked;
+
+    Log($"Checkbox for {employee.FirstName} changed to {isChecked}");
+
+                // Update status label
     var checkedCount = GetCheckedNodesCount();
     StatusLabel.Text = $"{checkedCount} node(s) selected";
 };
+
 ```
 
 ### CheckBox States
@@ -186,19 +174,18 @@ Use `RequestTreeItems` event or `LoadOnDemandCommand`.
 ### Using RequestTreeItems Event
 
 ```csharp
-sfTreeGrid.RequestTreeItems += (sender, e) =>
+sfTreeGrid.RequestTreeItems += (s, e) =>
 {
-    if (!e.HasChildNodes)
-    {
-        // Get parent data
-        var parentEmployee = e.ParentItem as Employee;
-        
-        // Load children from database/service
-        var children = LoadChildEmployees(parentEmployee.ID);
-        
-        // Assign children
-        e.ChildItems = children;
-    }
+    // Get parent data
+    var parent = e.ParentItem as Employee;
+
+    if (parent == null) return;
+
+    // Load children from data source
+    var children = LoadChildEmployees(parent.ID);
+
+    // Assign children
+    e.ChildItems = children;
 };
 
 private ObservableCollection<Employee> LoadChildEmployees(int parentID)
@@ -276,25 +263,22 @@ var manager = new Employee
 Load children asynchronously:
 
 ```csharp
-sfTreeGrid.RequestTreeItems += async (sender, e) =>
+sfTreeGrid.RequestTreeItems += async (s, e) =>
 {
-    if (!e.HasChildNodes)
+    if (e.ChildItems != null) return;
+
+    var parent = e.ParentItem as Employee;
+    if (parent == null) return;
+
+    ShowLoadingIndicator(true);
+
+    try
     {
-        var parent = e.ParentItem as Employee;
-        
-        // Show loading indicator
-        ShowLoadingIndicator(true);
-        
-        try
-        {
-            // Async load
-            var children = await LoadChildEmployeesAsync(parent.ID);
-            e.ChildItems = children;
-        }
-        finally
-        {
-            ShowLoadingIndicator(false);
-        }
+        e.ChildItems = await LoadChildEmployeesAsync(parent.ID);
+    }
+    finally
+    {
+        ShowLoadingIndicator(false);
     }
 };
 

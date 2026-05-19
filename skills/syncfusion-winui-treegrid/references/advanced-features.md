@@ -30,19 +30,22 @@ Display context menus on right-click for row/cell operations.
 private void TreeGrid_RightTapped(object sender, RightTappedRoutedEventArgs e)
 {
     var position = e.GetPosition(sfTreeGrid);
-    var rowColumnIndex = sfTreeGrid.GetRowColumnIndexAtPoint(position);
-    
-    if (rowColumnIndex.RowIndex > 0)
+
+    var elements = VisualTreeHelper.FindElementsInHostCoordinates(position, sfTreeGrid);
+
+    foreach (var element in elements)
     {
-        // Get the node and select it
-        var node = sfTreeGrid.GetNodeAtRowIndex(rowColumnIndex.RowIndex);
-        if (node != null)
+        if (element is TreeGridRowControl rowControl)
         {
-            sfTreeGrid.SelectedItem = node.Item;
-            
-            // Show context menu
-            var menu = sfTreeGrid.Resources["RowContextMenu"] as MenuFlyout;
-            menu?.ShowAt(sfTreeGrid, position);
+            var node = rowControl.DataContext as TreeNode;
+            if (node != null)
+            {
+                sfTreeGrid.SelectedItem = node.Item;
+
+                var menu = sfTreeGrid.Resources["RowContextMenu"] as MenuFlyout;
+                menu?.ShowAt(sfTreeGrid, position);
+                break;
+            }
         }
     }
 }
@@ -76,7 +79,7 @@ private async void DeleteRow_Click(object sender, RoutedEventArgs e)
 
 private void CopyRow_Click(object sender, RoutedEventArgs e)
 {
-    sfTreeGrid.Copy();
+    sfTreeGrid.ClipboardController.Copy();
 }
 ```
 
@@ -88,57 +91,65 @@ Show different menu items based on context:
 private void TreeGrid_RightTapped(object sender, RightTappedRoutedEventArgs e)
 {
     var position = e.GetPosition(sfTreeGrid);
-    var rowColumnIndex = sfTreeGrid.GetRowColumnIndexAtPoint(position);
-    
-    if (rowColumnIndex.RowIndex > 0)
+
+    var elements = VisualTreeHelper.FindElementsInHostCoordinates(position, sfTreeGrid);
+
+    foreach (var element in elements)
     {
-        var node = sfTreeGrid.GetNodeAtRowIndex(rowColumnIndex.RowIndex);
-        var employee = node?.Item as Employee;
-        
-        if (employee != null)
+        if (element is TreeGridRowControl rowControl)
         {
-            sfTreeGrid.SelectedItem = employee;
-            
-            // Create dynamic menu
-            var menu = new MenuFlyout();
-            
-            menu.Items.Add(new MenuFlyoutItem 
-            { 
-                Text = "Edit",
-                Icon = new SymbolIcon(Symbol.Edit)
-            });
-            
-            // Show different options based on status
-            if (employee.Status == "Active")
+            var node = rowControl.DataContext as TreeNode;
+            var employee = node?.Item as Employee;
+
+            if (employee != null)
             {
-                menu.Items.Add(new MenuFlyoutItem 
-                { 
-                    Text = "Deactivate",
-                    Icon = new SymbolIcon(Symbol.Cancel)
+                // Select row
+                sfTreeGrid.SelectedItem = employee;
+
+                // Create dynamic menu
+                var menu = new MenuFlyout();
+
+                menu.Items.Add(new MenuFlyoutItem
+                {
+                    Text = "Edit",
+                    Icon = new SymbolIcon(Symbol.Edit)
                 });
-            }
-            else
-            {
-                menu.Items.Add(new MenuFlyoutItem 
-                { 
-                    Text = "Activate",
-                    Icon = new SymbolIcon(Symbol.Accept)
+
+                // Conditional menu
+                if (employee.Status == "Active")
+                {
+                    menu.Items.Add(new MenuFlyoutItem
+                    {
+                        Text = "Deactivate",
+                        Icon = new SymbolIcon(Symbol.Cancel)
+                    });
+                }
+                else
+                {
+                    menu.Items.Add(new MenuFlyoutItem
+                    {
+                        Text = "Activate",
+                        Icon = new SymbolIcon(Symbol.Accept)
+                    });
+                }
+
+                menu.Items.Add(new MenuFlyoutSeparator());
+
+                menu.Items.Add(new MenuFlyoutItem
+                {
+                    Text = "Delete",
+                    Icon = new SymbolIcon(Symbol.Delete)
                 });
+
+                // Show menu
+                menu.ShowAt(sfTreeGrid, position);
+
+                break; 
             }
-            
-            menu.Items.Add(new MenuFlyoutSeparator());
-            menu.Items.Add(new MenuFlyoutItem 
-            { 
-                Text = "Delete",
-                Icon = new SymbolIcon(Symbol.Delete)
-            });
-            
-            menu.ShowAt(sfTreeGrid, position);
         }
     }
 }
 ```
-
 ## Tooltips
 
 Display tooltips on cell hover.
@@ -146,12 +157,12 @@ Display tooltips on cell hover.
 ### Enable Cell Tooltips
 
 ```xaml
-<treeGrid:SfTreeGrid ShowTooltip="True" 
+<treeGrid:SfTreeGrid ShowToolTip="True" 
                     ItemsSource="{Binding Employees}" />
 ```
 
 ```csharp
-sfTreeGrid.ShowTooltip = true;
+sfTreeGrid.ShowToolTip = true;
 ```
 
 **Default behavior:** Shows cell content in tooltip on hover.
@@ -159,25 +170,24 @@ sfTreeGrid.ShowTooltip = true;
 ### Custom Tooltip Template
 
 ```xaml
-<treeGrid:SfTreeGrid ShowTooltip="True">
-    <treeGrid:SfTreeGrid.TooltipTemplate>
-        <DataTemplate>
-            <Border Background="LightYellow" 
-                    BorderBrush="Gray" 
-                    BorderThickness="1"
-                    Padding="8">
-                <StackPanel>
-                    <TextBlock Text="{Binding FirstName}" 
-                              FontWeight="Bold" />
-                    <TextBlock Text="{Binding Title}" 
-                              FontSize="12" />
-                    <TextBlock Text="{Binding Salary, StringFormat='Salary: {0:C}'}" 
-                              FontSize="12" />
-                </StackPanel>
-            </Border>
-        </DataTemplate>
-    </treeGrid:SfTreeGrid.TooltipTemplate>
-</treeGrid:SfTreeGrid>
+<treeGrid:TreeGridTextColumn MappingName="FirstName"
+                             ShowToolTip="True"
+                             ToolTipTemplate="{StaticResource EmployeeToolTipTemplate}" />
+
+<treeGrid:SfTreeGrid.Resources>
+    <DataTemplate x:Key="EmployeeToolTipTemplate">
+        <Border Background="LightYellow"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Padding="8">
+            <StackPanel>
+                <TextBlock Text="{Binding FirstName}" FontWeight="Bold" />
+                <TextBlock Text="{Binding Title}" FontSize="12" />
+                <TextBlock Text="{Binding Salary, StringFormat='Salary: {0:C}'}" FontSize="12" />
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+</treeGrid:SfTreeGrid.Resources>
 ```
 
 ### Conditional Tooltips
@@ -185,33 +195,21 @@ sfTreeGrid.ShowTooltip = true;
 Show tooltips only for specific columns:
 
 ```csharp
-sfTreeGrid.QueryCellToolTip += (sender, e) =>
+sfTreeGrid.CellToolTipOpening += (sender, e) =>
 {
-    var node = sfTreeGrid.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex);
-    if (node != null)
+    var employee = e.Record as Employee;
+    if (employee == null) return;
+
+    // Show tooltip only for long text
+    if (e.Column.MappingName == "Description" && employee.Description.Length > 50)
     {
-        var employee = node.Item as Employee;
-        
-        // Show tooltip only for truncated text
-        if (e.Column.MappingName == "Description")
-        {
-            if (employee.Description.Length > 50)
-            {
-                e.ToolTip = new ToolTip
-                {
-                    Content = employee.Description
-                };
-            }
-        }
-        
-        // Custom tooltip for salary
-        if (e.Column.MappingName == "Salary")
-        {
-            e.ToolTip = new ToolTip
-            {
-                Content = $"Annual: {employee.Salary:C}\nMonthly: {employee.Salary/12:C}"
-            };
-        }
+        e.ToolTip.Content = employee.Description;
+    }
+
+    // Custom tooltip for salary
+    if (e.Column.MappingName == "Salary")
+    {
+        e.ToolTip.Content = $"Annual: {employee.Salary:C}\nMonthly: {employee.Salary / 12:C}";
     }
 };
 ```
@@ -219,38 +217,33 @@ sfTreeGrid.QueryCellToolTip += (sender, e) =>
 ### Rich Tooltip Content
 
 ```csharp
-sfTreeGrid.QueryCellToolTip += (sender, e) =>
+sfTreeGrid.CellToolTipOpening += (sender, e) =>
 {
-    var node = sfTreeGrid.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex);
-    if (node != null)
+    var employee = e.Record as Employee;
+    if (employee == null) return;
+
+    var tooltipContent = new StackPanel();
+
+    tooltipContent.Children.Add(new TextBlock
     {
-        var employee = node.Item as Employee;
-        
-        // Create rich tooltip
-        var tooltipContent = new StackPanel();
-        tooltipContent.Children.Add(new TextBlock 
-        { 
-            Text = $"{employee.FirstName} {employee.LastName}",
-            FontWeight = FontWeights.Bold,
-            FontSize = 14
-        });
-        tooltipContent.Children.Add(new TextBlock 
-        { 
-            Text = employee.Title,
-            Margin = new Thickness(0, 4, 0, 0)
-        });
-        tooltipContent.Children.Add(new TextBlock 
-        { 
-            Text = $"Department: {employee.Department}",
-            Margin = new Thickness(0, 2, 0, 0)
-        });
-        
-        e.ToolTip = new ToolTip
-        {
-            Content = tooltipContent,
-            Background = new SolidColorBrush(Colors.LightYellow)
-        };
-    }
+        Text = $"{employee.FirstName} {employee.LastName}",
+        FontWeight = FontWeights.Bold,
+        FontSize = 14
+    });
+
+    tooltipContent.Children.Add(new TextBlock
+    {
+        Text = employee.Title,
+        Margin = new Thickness(0, 4, 0, 0)
+    });
+
+    tooltipContent.Children.Add(new TextBlock
+    {
+        Text = $"Department: {employee.Department}",
+        Margin = new Thickness(0, 2, 0, 0)
+    });
+
+    e.ToolTip.Content = tooltipContent;
 };
 ```
 
@@ -438,46 +431,6 @@ var node = sfTreeGrid.GetNodeAtRowIndex(rowIndex);
 var employee = node?.Item as Employee;
 ```
 
-### Get Row Column Index at Point
-
-```csharp
-var position = e.GetPosition(sfTreeGrid);
-var rowColumnIndex = sfTreeGrid.GetRowColumnIndexAtPoint(position);
-```
-
-### Get Cell Value
-
-```csharp
-var column = sfTreeGrid.Columns["FirstName"];
-var node = sfTreeGrid.View.Nodes[0];
-var value = column.GetCellValue(node);
-```
-
-### Refresh Cell/Row
-
-```csharp
-// Refresh specific cell
-sfTreeGrid.InvalidateCell(rowIndex, columnIndex);
-
-// Refresh specific row
-sfTreeGrid.InvalidateRow(rowIndex);
-
-// Refresh all cells
-sfTreeGrid.InvalidateCells();
-```
-
-### Scroll to Row
-
-```csharp
-// Scroll to specific row index
-sfTreeGrid.ScrollToRowIndex(rowIndex);
-
-// Scroll to specific node
-var node = sfTreeGrid.View.Nodes[10];
-var rowIndex = sfTreeGrid.ResolveToRowIndex(node);
-sfTreeGrid.ScrollToRowIndex(rowIndex);
-```
-
 ## Performance Optimization
 
 ### Virtualization
@@ -496,11 +449,11 @@ Batch multiple operations:
 ```csharp
 using (sfTreeGrid.View.DeferRefresh(TreeViewRefreshMode.NodeRefresh))
 {
-    // Multiple operations
     sfTreeGrid.SortColumnDescriptions.Add(...);
-    sfTreeGrid.FilterPredicates.Add(...);
+    sfTreeGrid.Columns["FirstName"].FilterPredicates.Add(...);  
     viewModel.Employees.Add(...);
 }
+
 // Single refresh after using block
 ```
 
@@ -529,19 +482,6 @@ sfTreeGrid.ShowCheckBox = false;
 
 ### Optimize Styling Events
 
-```csharp
-// Cache brushes
-private SolidColorBrush _highlightBrush = new SolidColorBrush(Colors.Yellow);
-private SolidColorBrush _normalBrush = new SolidColorBrush(Colors.White);
-
-sfTreeGrid.QueryCellStyle += (sender, e) =>
-{
-    // Reuse brushes instead of creating new ones
-    e.Style.Background = condition ? _highlightBrush : _normalBrush;
-    e.Handled = true;
-};
-```
-
 ### Async Data Loading
 
 ```csharp
@@ -569,8 +509,8 @@ private async void LoadDataAsync()
 - Ensure position calculation is accurate
 
 **Tooltips not showing:**
-- Set `ShowTooltip = True`
-- Check `QueryCellToolTip` event doesn't return null
+- Set `ShowToolTip = True`
+- Check `CellToolTipOpening` event doesn't return null
 - Verify tooltip content is set
 
 **MVVM bindings not updating:**

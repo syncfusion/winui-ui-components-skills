@@ -192,7 +192,7 @@ public void SelectNodeByName(string name)
         treeView.SelectedItem = employee;
         
         // Optionally bring into view
-        var node = treeView.GetNode(employee);
+        var node = treeView.GetNodeAt(employee);
         treeView.BringIntoView(node);
     }
 }
@@ -576,9 +576,7 @@ private void OnSelectionChanging(object sender, ItemSelectionChangingEventArgs e
 
 2. Check if node is expanded to view
    ```csharp
-   var node = treeView.GetNode(employee);
-   treeView.ExpandNode(node);
-   treeView.BringIntoView(node);
+   treeView.BringIntoView(employee);
    ```
 
 ### Multiple Selection Not Working

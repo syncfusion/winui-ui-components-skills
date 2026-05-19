@@ -10,151 +10,46 @@
 
 Apply styles dynamically based on data values.
 
-### QueryCellStyle Event
+### Cell Styling using StyleSelector
 
-Customize individual cell appearance:
+You can customize cell appearance by using `SfTreeGrid.CellStyleSelector`.
+
+```xaml
+<Application.Resources>
+    <local:CustomCellStyleSelector x:Key="cellStyleSelector"/>
+
+    <Style x:Key="HighStyle" TargetType="treeGrid:TreeGridCell">
+        <Setter Property="Background" Value="LightGreen"/>
+    </Style>
+
+    <Style x:Key="LowStyle" TargetType="treeGrid:TreeGridCell">
+        <Setter Property="Background" Value="LightGray"/>
+    </Style>
+</Application.Resources>
+
+<treeGrid:SfTreeGrid
+    CellStyleSelector="{StaticResource cellStyleSelector}" />
+```
 
 ```csharp
-sfTreeGrid.QueryCellStyle += (sender, e) =>
+public class CustomCellStyleSelector : StyleSelector
 {
-    var node = sfTreeGrid.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex);
-    if (node != null)
+    public override Style SelectStyle(object item, DependencyObject container)
     {
-        var employee = node.Item as Employee;
-        
-        // Highlight high salaries
-        if (e.Column.MappingName == "Salary")
-        {
-            var salary = employee.Salary;
-            if (salary > 100000)
-            {
-                e.Style.Background = new SolidColorBrush(Colors.LightGreen);
-                e.Style.Foreground = new SolidColorBrush(Colors.DarkGreen);
-            }
-        }
-        
-        // Highlight inactive status
-        if (e.Column.MappingName == "Status" && employee.Status == "Inactive")
-        {
-            e.Style.Background = new SolidColorBrush(Colors.LightGray);
-        }
-        
-        e.Handled = true;
+        var cell = container as TreeGridCell;
+        var node = cell?.DataContext as TreeNode;
+        var data = node?.Item as Employee;
+
+        if (data == null) return null;
+
+        if (data.Salary > 100000)
+            return Application.Current.Resources["HighStyle"] as Style;
+
+        return Application.Current.Resources["LowStyle"] as Style;
     }
-};
+}
 ```
 
-### QueryRowStyle Event
-
-Customize entire row appearance:
-
-```csharp
-sfTreeGrid.QueryRowStyle += (sender, e) =>
-{
-    var node = sfTreeGrid.GetNodeAtRowIndex(e.RowIndex);
-    if (node != null)
-    {
-        var employee = node.Item as Employee;
-        
-        // Highlight managers
-        if (employee.Title.Contains("Manager"))
-        {
-            e.Style.Background = new SolidColorBrush(Colors.LightBlue);
-            e.Style.FontWeight = FontWeights.Bold;
-        }
-        
-        // Alternate row colors
-        if (e.RowIndex % 2 == 0)
-        {
-            e.Style.Background = new SolidColorBrush(Colors.White);
-        }
-        else
-        {
-            e.Style.Background = new SolidColorBrush(Colors.WhiteSmoke);
-        }
-        
-        e.Handled = true;
-    }
-};
-```
-
-### Style Properties Available
-
-```csharp
-e.Style.Background = new SolidColorBrush(Colors.Yellow);
-e.Style.Foreground = new SolidColorBrush(Colors.Black);
-e.Style.FontSize = 14;
-e.Style.FontWeight = FontWeights.Bold;
-e.Style.FontStyle = FontStyle.Italic;
-e.Style.TextAlignment = TextAlignment.Right;
-e.Style.BorderBrush = new SolidColorBrush(Colors.Red);
-e.Style.BorderThickness = new Thickness(2);
-```
-
-### Priority-Based Cell Styling
-
-```csharp
-sfTreeGrid.QueryCellStyle += (sender, e) =>
-{
-    if (e.Column.MappingName == "Priority")
-    {
-        var node = sfTreeGrid.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex);
-        var task = node?.Item as TaskItem;
-        
-        if (task != null)
-        {
-            switch (task.Priority)
-            {
-                case "High":
-                    e.Style.Background = new SolidColorBrush(Colors.Red);
-                    e.Style.Foreground = new SolidColorBrush(Colors.White);
-                    e.Style.FontWeight = FontWeights.Bold;
-                    break;
-                case "Medium":
-                    e.Style.Background = new SolidColorBrush(Colors.Yellow);
-                    break;
-                case "Low":
-                    e.Style.Background = new SolidColorBrush(Colors.LightGreen);
-                    break;
-            }
-            
-            e.Handled = true;
-        }
-    }
-};
-```
-
-### Date-Based Styling
-
-```csharp
-sfTreeGrid.QueryCellStyle += (sender, e) =>
-{
-    if (e.Column.MappingName == "DueDate")
-    {
-        var node = sfTreeGrid.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex);
-        var task = node?.Item as TaskItem;
-        
-        if (task != null && task.DueDate.HasValue)
-        {
-            var daysRemaining = (task.DueDate.Value - DateTime.Now).Days;
-            
-            // Overdue
-            if (daysRemaining < 0)
-            {
-                e.Style.Background = new SolidColorBrush(Colors.Red);
-                e.Style.Foreground = new SolidColorBrush(Colors.White);
-            }
-            // Due soon (within 3 days)
-            else if (daysRemaining <= 3)
-            {
-                e.Style.Background = new SolidColorBrush(Colors.Orange);
-            }
-            
-            e.Handled = true;
-        }
-    }
-};
-```
 
 ## GridLines Customization
 
@@ -224,15 +119,6 @@ Show/hide row headers:
 ```csharp
 sfTreeGrid.ShowRowHeader = true;
 sfTreeGrid.RowHeaderWidth = 30;
-```
-
-### Indent Column
-
-Customize the tree structure indent column:
-
-```csharp
-sfTreeGrid.IndentColumnWidth = 30;  // Width of indent per level
-sfTreeGrid.ExpanderColumnWidth = 24;  // Width of expander icon
 ```
 
 ### Customize Expander Icon
@@ -387,128 +273,6 @@ Use Syncfusion Theme Studio for advanced customization:
 </Application.Resources>
 ```
 
-## Common Patterns
-
-### Zebra Striping (Alternating Rows)
-
-```csharp
-sfTreeGrid.QueryRowStyle += (sender, e) =>
-{
-    if (e.RowIndex == 0) return;  // Skip header
-    
-    if (e.RowIndex % 2 == 0)
-    {
-        e.Style.Background = new SolidColorBrush(Colors.White);
-    }
-    else
-    {
-        e.Style.Background = new SolidColorBrush(Color.FromArgb(255, 245, 245, 245));
-    }
-    
-    e.Handled = true;
-};
-```
-
-### Highlight Search Results
-
-```csharp
-private string _searchText = "";
-
-sfTreeGrid.QueryCellStyle += (sender, e) =>
-{
-    if (!string.IsNullOrEmpty(_searchText))
-    {
-        var cellValue = e.DisplayText?.ToString() ?? "";
-        
-        if (cellValue.Contains(_searchText, StringComparison.OrdinalIgnoreCase))
-        {
-            e.Style.Background = new SolidColorBrush(Colors.Yellow);
-            e.Handled = true;
-        }
-    }
-};
-
-private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-{
-    _searchText = SearchTextBox.Text;
-    sfTreeGrid.InvalidateCells();  // Refresh styling
-}
-```
-
-### Conditional Formatting with Multiple Conditions
-
-```csharp
-sfTreeGrid.QueryCellStyle += (sender, e) =>
-{
-    var node = sfTreeGrid.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex);
-    if (node != null)
-    {
-        var employee = node.Item as Employee;
-        
-        // Multiple condition styling
-        bool isManager = employee.Title.Contains("Manager");
-        bool highSalary = employee.Salary > 100000;
-        bool isActive = employee.Status == "Active";
-        
-        if (isManager && highSalary && isActive)
-        {
-            e.Style.Background = new SolidColorBrush(Colors.Gold);
-            e.Style.FontWeight = FontWeights.Bold;
-        }
-        else if (!isActive)
-        {
-            e.Style.Foreground = new SolidColorBrush(Colors.Gray);
-            e.Style.FontStyle = FontStyle.Italic;
-        }
-        
-        e.Handled = true;
-    }
-};
-```
-
-### Heat Map Styling (Data Visualization)
-
-```csharp
-sfTreeGrid.QueryCellStyle += (sender, e) =>
-{
-    if (e.Column.MappingName == "Performance")
-    {
-        var node = sfTreeGrid.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex);
-        var employee = node?.Item as Employee;
-        
-        if (employee != null)
-        {
-            var performance = employee.Performance;
-            byte intensity = (byte)(255 * (performance / 100.0));
-            
-            // Red to Green gradient
-            Color color = performance < 50 
-                ? Color.FromArgb(255, 255, (byte)(intensity * 2), 0)
-                : Color.FromArgb(255, (byte)(255 - (intensity - 128) * 2), 255, 0);
-            
-            e.Style.Background = new SolidColorBrush(color);
-            e.Handled = true;
-        }
-    }
-};
-```
-
-### Custom Borders for Grouping
-
-```csharp
-sfTreeGrid.QueryRowStyle += (sender, e) =>
-{
-    var node = sfTreeGrid.GetNodeAtRowIndex(e.RowIndex);
-    if (node != null && node.Level == 0)
-    {
-        // Add thick border to root nodes
-        e.Style.BorderThickness = new Thickness(0, 2, 0, 2);
-        e.Style.BorderBrush = new SolidColorBrush(Colors.Navy);
-        e.Handled = true;
-    }
-};
-```
-
 ## Troubleshooting
 
 **Styles not applying:**
@@ -527,6 +291,5 @@ sfTreeGrid.QueryRowStyle += (sender, e) =>
 - Restart application after theme change
 
 **Performance issues with styling:**
-- Minimize complex logic in `QueryCellStyle`
 - Cache brushes instead of creating new ones
 - Use `InvalidateCells()` sparingly

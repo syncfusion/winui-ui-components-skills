@@ -24,9 +24,10 @@ Control how columns calculate their widths using the `ColumnWidthMode` property:
 | **None** | No sizing applied | Setting explicit widths per column |
 | **Auto** | Fits column width to content and header | Content varies, need tight fit |
 | **Star** | Divides available space proportionally | Equal or weighted distribution |
-| **Fill** | Stretches last column to fill remaining space | Prevent horizontal scrolling |
 | **SizeToCells** | Fits to cell content only | Header shorter than content |
 | **SizeToHeader** | Fits to header text only | Header longer than content |
+| **AutoLastColumnFill** | Content header fill column | Remove empty space |
+| **AutoWithLastColumnFill** | Content header default fill | Automatic fill layout |
 
 **Example - Star sizing:**
 ```xaml
@@ -83,13 +84,6 @@ Control whether users can resize columns:
 ```csharp
 sfTreeGrid.AllowResizingColumns = true;
 column.AllowResizing = false;
-```
-
-**ResizingMode options:**
-```csharp
-sfTreeGrid.ResizingMode = ResizingMode.OnMoved;  // Resize during drag
-// or
-sfTreeGrid.ResizingMode = ResizingMode.OnTouchUp; // Resize after release
 ```
 
 ## Header Customization

@@ -23,7 +23,6 @@ Enable row reordering via drag-and-drop.
 sfDataGrid.RowDragOver += (s, e) =>
 {
     // e.TargetRecord - drop target
-    // e.SourceRecords - dragged records
     // Cancel if needed
 };
 
@@ -60,11 +59,11 @@ sfDataGrid.QueryUnboundRow += (s, e) =>
 {
     if (e.UnboundAction == UnboundActions.QueryData)
     {
-        if (e.ColumnName == "OrderID")
+        if (e.Column.MappingName == "OrderID")
         {
             e.Value = "Total:";
         }
-        else if (e.ColumnName == "UnitPrice")
+        else if (e.Column.MappingName == "UnitPrice")
         {
             var orders = sfDataGrid.ItemsSource as IEnumerable<OrderInfo>;
             e.Value = orders.Sum(o => o.UnitPrice);

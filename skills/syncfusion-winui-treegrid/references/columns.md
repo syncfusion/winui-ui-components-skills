@@ -162,7 +162,8 @@ Displays numeric data with SfNumberBox editor for editing.
 - `DisplayNumberFormat` - Number format (C2 for currency, N2 for number, P2 for percent)
 - `NumberDecimalDigits` - Decimal places
 - `MinValue` / `MaxValue` - Value constraints
-- `Step` - Increment/decrement step value
+- `UpDownPlacementMode` -  Placement of up/down buttons used to increment or decrement the numeric value.
+
 
 ### TreeGridDateColumn
 
@@ -179,7 +180,6 @@ Displays dates with SfCalendarDatePicker editor.
 **Key Properties:**
 - `DisplayDateFormat` - Date display format
 - `MinDate` / `MaxDate` - Date range constraints
-- `FirstDayOfWeek` - Calendar week start day
 
 ### TreeGridTimeColumn
 
@@ -193,7 +193,7 @@ Displays time values with SfTimePicker editor.
 
 **Key Properties:**
 - `DisplayTimeFormat` - Time display format
-- `ClockIdentifier` - 12-hour or 24-hour clock
+- `MaxTime` / `MinTime` - Time constraints
 
 ### TreeGridCheckBoxColumn
 
@@ -239,10 +239,10 @@ Displays clickable URI links.
 ```
 
 **Events:**
-- `RequestNavigate` - Fired when link is clicked
+- `CurrentCellRequestNavigate` - Fired when link is clicked
 
 ```csharp
-hyperlinkColumn.RequestNavigate += (sender, e) =>
+hyperlinkColumn.CurrentCellRequestNavigate += (sender, e) =>
 {
     // Open URL in browser
     Process.Start(new ProcessStartInfo(e.Uri.ToString()) 

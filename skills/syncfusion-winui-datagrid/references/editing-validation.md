@@ -157,9 +157,6 @@ foreach (var item in selectedItems)
 ```csharp
 // Commit current cell edit
 sfDataGrid.SelectionController.CurrentCellManager.EndEdit();
-
-// Cancel current cell edit
-sfDataGrid.SelectionController.CurrentCellManager.CancelEdit();
 ```
 
 ## Data Validation
@@ -387,8 +384,10 @@ sfDataGrid.CurrentCellValidated += SfDataGrid_CurrentCellValidated;
 
 private void SfDataGrid_CurrentCellValidated(object sender, CurrentCellValidatedEventArgs e)
 {
-    Debug.WriteLine($"Cell at ({e.RowColumnIndex.RowIndex}, {e.RowColumnIndex.ColumnIndex}) validated");
+    var rowData = e.RowData as OrderInfo;
+    Debug.WriteLine($"Row: {rowData?.OrderID}, Column: {e.Column.MappingName} validated");
 }
+
 ```
 
 ### CurrentCellValueChanged
@@ -442,18 +441,16 @@ sfDataGrid.CurrentCellBeginEdit += (s, e) =>
 
 ```csharp
 sfDataGrid.CurrentCellValidating += (s, e) =>
-{
-    var rowData = sfDataGrid.GetRecordAtRowIndex(e.RowColumnIndex.RowIndex) as OrderInfo;
-    
+{    
     if (e.Column.MappingName == "Quantity")
     {
         if (int.TryParse(e.NewValue?.ToString(), out int qty))
         {
             // Check inventory
-            if (qty > rowData.AvailableStock)
+            if (qty > e.RowData.AvailableStock)
             {
                 e.IsValid = false;
-                e.ErrorMessage = $"Only {rowData.AvailableStock} units available";
+                e.ErrorMessage = $"Only {e.RowData.AvailableStock} units available";
             }
         }
     }
@@ -484,10 +481,9 @@ sfDataGrid.CurrentCellValidating += (s, e) =>
     {
         var newOrderID = e.NewValue?.ToString();
         var orders = sfDataGrid.ItemsSource as ObservableCollection<OrderInfo>;
-        var currentRowData = sfDataGrid.GetRecordAtRowIndex(e.RowColumnIndex.RowIndex) as OrderInfo;
         
         // Check if OrderID already exists (excluding current row)
-        if (orders.Any(o => o.OrderID.ToString() == newOrderID && o != currentRowData))
+        if (orders.Any(o => o.OrderID.ToString() == newOrderID && o != e.RowData))
         {
             e.IsValid = false;
             e.ErrorMessage = "OrderID already exists";

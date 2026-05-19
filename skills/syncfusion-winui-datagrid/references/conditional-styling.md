@@ -83,13 +83,6 @@ public class CellStyleSelector : StyleSelector
 }
 ```
 
-## Alternating Row Colors
-
-```xml
-<dataGrid:SfDataGrid AlternatingRowBackground="LightGray"
-                     ItemsSource="{Binding Orders}" />
-```
-
 ## Custom Cell Templates
 
 ```xml

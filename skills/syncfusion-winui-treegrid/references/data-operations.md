@@ -20,7 +20,7 @@ sfTreeGrid.ClipboardCopyOption = GridCopyOption.IncludeHeaders;
 | **CopyData** | Copy cell data only |
 | **IncludeHeaders** | Copy with column headers |
 | **IncludeFormat** | Copy with formatting |
-| **ExcludeHeaders** | Copy data without headers |
+| **IncludeHiddenColumn** | Copy hidden columns |
 
 ### Copy Selected Rows
 
@@ -35,13 +35,9 @@ sfTreeGrid.ClipboardCopyOption = GridCopyOption.IncludeHeaders;
 ### Programmatic Copy
 
 ```csharp
-// Copy all data
-sfTreeGrid.Copy();
-
-// Copy selected items only
 if (sfTreeGrid.SelectedItems.Count > 0)
 {
-    sfTreeGrid.Copy();
+    sfTreeGrid.ClipboardController.Copy();   
 }
 ```
 
@@ -49,7 +45,7 @@ if (sfTreeGrid.SelectedItems.Count > 0)
 
 ```csharp
 // Enable paste
-sfTreeGrid.ClipboardPasteOption = GridPasteOption.PasteData;
+sfTreeGrid.PasteOption = GridPasteOptions.PasteData;
 
 // Paste with Ctrl+V
 // User must select target cell first
@@ -60,14 +56,14 @@ sfTreeGrid.ClipboardPasteOption = GridPasteOption.PasteData;
 | **None** | Paste disabled |
 | **PasteData** | Paste cell values |
 | **ExcludeFirstLine** | Skip first line (header) |
-| **IncludeFormat** | Paste with formatting |
+| **IncludeHiddenColumn** | Paste hidden columns 
 
-### CopyGridCellContent Event
+### CopyCellContent Event
 
 Customize copied content:
 
 ```csharp
-sfTreeGrid.CopyGridCellContent += (sender, e) =>
+sfTreeGrid.CopyCellContent  += (sender, e) =>
 {
     // Customize cell content for clipboard
     if (e.Column.MappingName == "Salary")
@@ -87,12 +83,12 @@ sfTreeGrid.CopyGridCellContent += (sender, e) =>
 };
 ```
 
-### PastingGridCellContent Event
+### PasteCellContent Event
 
 Validate or transform pasted data:
 
 ```csharp
-sfTreeGrid.PastingGridCellContent += (sender, e) =>
+sfTreeGrid.PasteCellContent  += (sender, e) =>
 {
     // Validate pasted data
     if (e.Column.MappingName == "Salary")
@@ -101,7 +97,7 @@ sfTreeGrid.PastingGridCellContent += (sender, e) =>
         {
             if (salary < 0)
             {
-                e.Cancel = true;  // Reject negative values
+                e.Handled = true;  // Reject negative values
                 ShowMessage("Salary cannot be negative");
             }
         }
@@ -169,13 +165,14 @@ Install-Package Syncfusion.GridExport.WinUI
 ```csharp
 using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.XlsIO;
+using Syncfusion.UI.Xaml.TreeGrid.Export; 
 
 private async void ExportToExcel()
 {
-    var options = new TreeGridExcelExportingOptions();
+    var options = new TreeGridExcelExportOptions();
     options.ExcelVersion = ExcelVersion.Excel2016;
     
-    var excelEngine = sfTreeGrid.ExportToExcel(sfTreeGrid.View, options);
+    var excelEngine = sfTreeGrid.ExportToExcel(options);
     var workbook = excelEngine.Excel.Workbooks[0];
     
     // Save file
@@ -205,7 +202,7 @@ private async void ExportToExcel()
 Configure export settings:
 
 ```csharp
-var options = new TreeGridExcelExportingOptions
+var options = new TreeGridExcelExportOptions
 {
     // Excel version
     ExcelVersion = ExcelVersion.Excel2016,
@@ -254,7 +251,7 @@ private void ExportSelectedRows()
 ### Customize Cell Export
 
 ```csharp
-options.CellsExportingEventHandler = (sender, e) =>
+options.CellsExportHandler  = (sender, e) =>
 {
     // Customize cell format
     if (e.ColumnName == "Salary")
@@ -382,7 +379,7 @@ private async void ExportWithProgress()
         await Task.Run(() =>
         {
             var options = new TreeGridExcelExportingOptions();
-            var excelEngine = sfTreeGrid.ExportToExcel(sfTreeGrid.View, options);
+            var excelEngine = sfTreeGrid.ExportToExcel(options);
             // Save...
         });
     }
@@ -400,7 +397,7 @@ private void ExportFilteredData()
 {
     // TreeGrid automatically exports only visible (filtered) rows
     var options = new TreeGridExcelExportingOptions();
-    var excelEngine = sfTreeGrid.ExportToExcel(sfTreeGrid.View, options);
+    var excelEngine = sfTreeGrid.ExportToExcel(options);
     // Save...
 }
 ```

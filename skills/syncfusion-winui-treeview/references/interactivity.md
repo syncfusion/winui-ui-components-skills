@@ -297,7 +297,7 @@ private void OnTreeViewKeyDown(object sender, KeyRoutedEventArgs e)
         var selected = treeView.SelectedItem;
         if (selected != null)
         {
-            var node = treeView.GetNode(selected);
+            var node = treeView.GetNodeAt((Point)selected);
             treeView.BeginEdit(node);
             e.Handled = true;
         }
@@ -319,28 +319,28 @@ private void OnTreeViewKeyDown(object sender, KeyRoutedEventArgs e)
 ### Bring Node Into View
 
 ```csharp
-// Scroll to specific node
-var node = treeView.GetNode(fileObject);
-treeView.BringIntoView(node);
+
+// Scroll to specific data item
+treeView.BringIntoView(fileObject);
+
 ```
 
 ### Smooth Scrolling
 
 ```csharp
 // Expand path and scroll to node
-public void NavigateToNode(FileNode target)
+public async Task NavigateToNode(FileNode target)
 {
     // Expand ancestors
     ExpandPathToNode(target);
-    
+
     // Small delay to allow expansion
     await Task.Delay(100);
-    
-    // Scroll to node
-    var node = treeView.GetNode(target);
-    treeView.BringIntoView(node);
-    
-    // Select
+
+    // Scroll to item
+    treeView.BringIntoView(target);
+
+    // Select item
     treeView.SelectedItem = target;
 }
 ```

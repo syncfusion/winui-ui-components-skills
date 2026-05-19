@@ -318,7 +318,7 @@ private void SfDataGrid_FilterChanging(object sender, GridFilterEventArgs e)
     
     // Cancel filtering
     if (e.Column.MappingName == "OrderID")
-        e.Cancel = true;
+        e.Handled = true;
 }
 ```
 
@@ -407,9 +407,6 @@ sfDataGrid.ExpandGroupsAtLevel(0); // Expand first level only
 
 // Collapse specific group level
 sfDataGrid.CollapseGroupsAtLevel(1); // Collapse second level
-
-// Check if group is expanded
-bool isExpanded = sfDataGrid.IsGroupExpanded(groupKey);
 
 // Expand/collapse specific group
 sfDataGrid.ExpandGroup(group);
