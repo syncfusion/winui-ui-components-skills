@@ -1,23 +1,37 @@
-# Theming for Syncfusion WinUI
+# WinUI Theming
 
-## Available Themes
-
-Syncfusion WinUI provides built-in themes matching Windows design patterns:
-
-1. **FluentLight** - Light theme (default)
-2. **FluentDark** - Dark theme
-3. **MaterialLight** - Material design light
-4. **MaterialDark** - Material design dark
-5. **WinUI** - Windows native theme
+WinUI 3 uses native Windows theming with two built-in themes: Light and Dark.
 
 ---
 
-## Setting Theme Globally
+## Setting Application Theme
 
-### Method 1: In App.xaml.cs (Recommended)
+### Method 1: In App.xaml (XAML)
+
+Set the theme at application startup using `RequestedTheme`:
+
+```xml
+<Application x:Class="YourApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             RequestedTheme="Dark">
+    
+    <Application.Resources>
+    </Application.Resources>
+    
+</Application>
+```
+
+**Available values:**
+- `Light` - Light theme (default)
+- `Dark` - Dark theme
+
+### Method 2: In App.xaml.cs (Code)
+
+Set theme at application startup:
 
 ```csharp
-using Syncfusion.WinUI.Theme;
+using Syncfusion.Licensing;
 
 public partial class App : Application
 {
@@ -25,16 +39,19 @@ public partial class App : Application
     {
         SyncfusionLicenseProvider.RegisterLicense("YOUR_LICENSE_KEY");
         
-        // Set application-wide theme
-        // IMPORTANT: Must be called before InitializeComponent()
-        SyncfusionThemesHelper.SetTheme("FluentDark");
+        // Set application theme before InitializeComponent
+        this.RequestedTheme = ApplicationTheme.Dark;
         
         this.InitializeComponent();
     }
 }
 ```
 
-### Method 2: Dynamic Theme Switching
+---
+
+## Dynamic Theme Switching
+
+Switch themes at runtime:
 
 ```csharp
 public partial class MainWindow : Window
@@ -44,43 +61,35 @@ public partial class MainWindow : Window
         this.InitializeComponent();
     }
     
-    private void ChangeTheme(string themeName)
-    {
-        // Can be called at any time to switch themes dynamically
-        SyncfusionThemesHelper.SetTheme(themeName);
-    }
-    
     private void DarkModeButton_Click(object sender, RoutedEventArgs e)
     {
-        ChangeTheme("FluentDark");
+        Application.Current.RequestedTheme = ApplicationTheme.Dark;
     }
     
     private void LightModeButton_Click(object sender, RoutedEventArgs e)
     {
-        ChangeTheme("FluentLight");
+        Application.Current.RequestedTheme = ApplicationTheme.Light;
     }
 }
 ```
 
 ---
 
-## Theme Names Reference
+## System Theme Detection and Persistence
 
-Use these exact strings when calling `SetTheme()`:
+WinUI provides two complementary approaches for theme management:
 
-```csharp
-"FluentLight"      // Default light theme - Windows Fluent Design
-"FluentDark"       // Dark theme - Windows Fluent Design
-"MaterialLight"    // Light theme - Material Design
-"MaterialDark"     // Dark theme - Material Design
-"WinUI"            // Windows native theme
-```
+| Approach | Use Case | Storage | Reactivity |
+|----------|----------|---------|-----------|
+| **System Theme Detection** | Follow user's OS theme preference | None (OS-level) | One-time at startup |
+| **System Theme Listening** | Follow OS theme + react to changes | None (OS-level) | Real-time synchronization |
+| **Theme Persistence** | Respect user's explicit choice | LocalSettings | Startup + explicit changes |
 
 ---
 
-## System Theme Detection
+## System Theme Detection (Startup)
 
-Automatically detect and apply system theme preference:
+Detect and apply system theme preference at application startup:
 
 ```csharp
 using Windows.UI.ViewManagement;
@@ -91,25 +100,26 @@ public partial class App : Application
     {
         SyncfusionLicenseProvider.RegisterLicense("YOUR_LICENSE_KEY");
         
-        // Detect system theme and apply matching theme
+        // Apply system theme once at startup
         var uiSettings = new UISettings();
         var color = uiSettings.GetColorValue(UIColorType.Background);
         
-        if (color == Windows.UI.Colors.White)
-        {
-            SyncfusionThemesHelper.SetTheme("FluentLight");
-        }
-        else
-        {
-            SyncfusionThemesHelper.SetTheme("FluentDark");
-        }
+        this.RequestedTheme = (color == Windows.UI.Colors.White) 
+            ? ApplicationTheme.Light 
+            : ApplicationTheme.Dark;
         
         this.InitializeComponent();
     }
 }
 ```
 
-### Listening to System Theme Changes
+**When to use:** Applications that should simply respect the user's current OS theme at launch.
+
+---
+
+## System Theme Listening (Real-time)
+
+Listen and react to system theme changes in real-time:
 
 ```csharp
 using Windows.UI.ViewManagement;
@@ -122,205 +132,75 @@ public partial class App : Application
     {
         SyncfusionLicenseProvider.RegisterLicense("YOUR_LICENSE_KEY");
         
-        // Initialize with current theme
         ApplySystemTheme();
         
-        // Listen for theme changes
+        // Listen for system theme changes
         _uiSettings = new UISettings();
-        _uiSettings.ColorValuesChanged += UISettings_ColorValuesChanged;
+        _uiSettings.ColorValuesChanged += (s, e) => 
+            DispatcherQueue.TryEnqueue(() => ApplySystemTheme());
         
         this.InitializeComponent();
-    }
-    
-    private void UISettings_ColorValuesChanged(UISettings sender, object args)
-    {
-        // Re-apply theme when system theme changes
-        DispatcherQueue.TryEnqueue(() => ApplySystemTheme());
     }
     
     private void ApplySystemTheme()
     {
         var color = _uiSettings.GetColorValue(UIColorType.Background);
-        var theme = color == Windows.UI.Colors.White ? "FluentLight" : "FluentDark";
-        SyncfusionThemesHelper.SetTheme(theme);
+        this.RequestedTheme = (color == Windows.UI.Colors.White) 
+            ? ApplicationTheme.Light 
+            : ApplicationTheme.Dark;
     }
 }
 ```
 
+**When to use:** Applications that need to dynamically follow OS theme changes without restarting.
+
 ---
 
-## Theme Customization
+## Accessibility
 
-### Using Theme Studio (Offline Customization)
+WinUI themes automatically support:
+- ✓ High Contrast mode
+- ✓ WCAG AA compliance
+- ✓ Keyboard navigation
+- ✓ Screen readers
 
-Syncfusion provides Theme Studio for creating custom themes:
+All Syncfusion WinUI components inherit the application theme automatically.
 
-1. Download Theme Studio from [Syncfusion Downloads](https://www.syncfusion.com/downloads)
-2. Open theme file (.xaml) in Theme Studio
-3. Customize colors and styles
-4. Export custom theme
-5. Include in your project resources
+---
 
-### Applying Custom Theme Resources
+## Custom Theme Creation
+
+Override application resources to create custom color schemes:
 
 ```xml
-<!-- In App.xaml -->
-<Application x:Class="YourApp.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+<!-- App.xaml -->
+<Application RequestedTheme="Dark">
     <Application.Resources>
-        <!-- Include your custom theme resources -->
-        <ResourceDictionary Source="ms-appx:///Themes/CustomTheme.xaml" />
+        <!-- Custom accent and background colors -->
+        <Color x:Key="AppAccentColor">#FF0078D4</Color>
+        <SolidColorBrush x:Key="AppBackground" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="AppForeground" Color="#FFFFFF"/>
     </Application.Resources>
-    
 </Application>
 ```
 
----
+Apply custom resources to controls:
 
-## Theme-Aware Component Styling
-
-### Conditional Styling Based on Theme
-
-```csharp
-using Syncfusion.WinUI.Theme;
-
-public partial class MainWindow : Window
-{
-    public MainWindow()
-    {
-        this.InitializeComponent();
-        
-        // Get current theme
-        string currentTheme = SyncfusionThemesHelper.CurrentTheme;
-        
-        if (currentTheme == "FluentDark")
-        {
-            // Apply dark theme specific styling
-            ApplyDarkThemeStyles();
-        }
-        else
-        {
-            // Apply light theme specific styling
-            ApplyLightThemeStyles();
-        }
-    }
-    
-    private void ApplyDarkThemeStyles()
-    {
-        // Configure components for dark theme
-        // Example: Adjust accent colors, shadows, etc.
-    }
-    
-    private void ApplyLightThemeStyles()
-    {
-        // Configure components for light theme
-    }
-}
+```xml
+<!-- MainWindow.xaml -->
+<Window Background="{StaticResource AppBackground}">
+    <ComboBox Foreground="{StaticResource AppForeground}" />
+</Window>
 ```
 
 ---
 
-## Saving User Theme Preference
+## Best Practices
 
-### Store and Restore Theme Selection
-
-```csharp
-using Windows.Storage;
-using Syncfusion.WinUI.Theme;
-
-public partial class App : Application
-{
-    private const string THEME_PREFERENCE_KEY = "UserThemePreference";
-    
-    public App()
-    {
-        SyncfusionLicenseProvider.RegisterLicense("YOUR_LICENSE_KEY");
-        
-        // Load saved theme preference
-        string savedTheme = LoadThemePreference();
-        if (!string.IsNullOrEmpty(savedTheme))
-        {
-            SyncfusionThemesHelper.SetTheme(savedTheme);
-        }
-        else
-        {
-            // Use system theme as default
-            ApplySystemTheme();
-        }
-        
-        this.InitializeComponent();
-    }
-    
-    public void SaveThemePreference(string theme)
-    {
-        var localSettings = ApplicationData.Current.LocalSettings;
-        localSettings.Values[THEME_PREFERENCE_KEY] = theme;
-        SyncfusionThemesHelper.SetTheme(theme);
-    }
-    
-    public string LoadThemePreference()
-    {
-        var localSettings = ApplicationData.Current.LocalSettings;
-        return localSettings.Values.ContainsKey(THEME_PREFERENCE_KEY) 
-            ? (string)localSettings.Values[THEME_PREFERENCE_KEY] 
-            : null;
-    }
-    
-    private void ApplySystemTheme()
-    {
-        var uiSettings = new Windows.UI.ViewManagement.UISettings();
-        var color = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background);
-        var theme = color == Windows.UI.Colors.White ? "FluentLight" : "FluentDark";
-        SyncfusionThemesHelper.SetTheme(theme);
-    }
-}
-```
-
----
-
-## Material Design vs. Fluent Design
-
-### When to Use Each
-
-| Aspect | Fluent | Material |
-|--------|--------|----------|
-| **Best For** | Windows applications | Cross-platform consistency |
-| **Feel** | Modern, native Windows | Google Material Design |
-| **Animations** | Windows-style transitions | Material motion principles |
-| **Color Palette** | Windows accent colors | Material color system |
-| **Spacing** | Windows-based | Material guidelines |
-
-### Side-by-Side Comparison
-
-```csharp
-// Fluent Light - Default Windows style
-SyncfusionThemesHelper.SetTheme("FluentLight");
-
-// vs.
-
-// Material Light - Material Design principles
-SyncfusionThemesHelper.SetTheme("MaterialLight");
-```
-
----
-
-## Theme Performance Considerations
-
-### Theme Switch Performance
-
-- Theme switching is fast (milliseconds)
-- No need to recreate components
-- Safe to call multiple times
-- Can be used for real-time theme toggling
-
-### Best Practices
-
-1. **Set theme once at startup** if possible
-2. **Cache theme preference** to avoid repeated file I/O
-3. **Avoid theme switching in tight loops** or animations
-4. **Test theme transitions** on target hardware
+1. **Set theme once at startup** to avoid performance impact
+2. **Cache theme preferences** to avoid repeated I/O
+3. **Test transitions** on target hardware for smooth UX
+4. **Use system detection** for automatic theme following
 
 ---
 
@@ -367,4 +247,3 @@ All built-in themes meet WCAG AA standards:
 - **Fluent Design System:** [Microsoft Fluent Design](https://www.microsoft.com/design/fluent)
 - **Material Design:** [Google Material Design](https://material.io)
 - **WCAG Guidelines:** [W3C WCAG 2.1](https://www.w3.org/WAI/WCAG21/quickref/)
-- **Syncfusion Themes:** [Theme Studio Documentation](https://www.syncfusion.com/products/wpf/theme-studio)

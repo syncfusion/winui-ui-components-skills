@@ -831,10 +831,11 @@ public partial class App : Application
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:syncfusion="using:Syncfusion.UI.Xaml.Controls"
+        xmlns:editors="using:Syncfusion.UI.Xaml.Editors"
         FlowDirection="RightToLeft">
     
     <Grid>
-        <syncfusion:SfButton Content="موافق" />  <!-- "OK" in Arabic -->
+        <editors:SfComboBox x:Name="comboBox" Content="موافق" />  <!-- "OK" in Arabic -->
     </Grid>
     
 </Window>
@@ -896,13 +897,9 @@ Components automatically adjust in RTL mode:
 ```xml
 <Grid FlowDirection="{Binding FlowDirection}">
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-        <!-- Buttons automatically mirror in RTL -->
-        <syncfusion:SfButton Content="إرسال" />  <!-- "Send" -->
-        <syncfusion:SfButton Content="إلغاء" />   <!-- "Cancel" -->
+        <!-- ComboBox and MaskedTextBox automatically mirror in RTL -->
+        <editors:SfComboBox x:Name="comboBox" PlaceholderText="إرسال" />  <!-- "Send" -->
     </StackPanel>
-    
-    <TextBlock Text="مرحبا بالعالم"  <!-- "Hello World" in Arabic -->
-               TextAlignment="Right" />
 </Grid>
 ```
 

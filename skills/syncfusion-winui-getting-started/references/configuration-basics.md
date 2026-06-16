@@ -35,17 +35,19 @@ public partial class App : Application
 All Syncfusion components support standard WinUI automation properties:
 
 ```xml
-<syncfusion:SfButton 
-    Content="Submit"
-    AutomationProperties.Name="Submit Form Button"
-    AutomationProperties.HelpText="Click to submit the form"
-    AutomationProperties.AutomationControlType="Button" />
+<editors:SfComboBox 
+    x:Name="comboBox"
+    PlaceholderText="Select an option"
+    AutomationProperties.Name="Selection ComboBox"
+    AutomationProperties.HelpText="Select from dropdown list"
+    AutomationProperties.AutomationControlType="ComboBox" />
 
-<syncfusion:SfTextBox
-    x:Name="nameInput"
-    Watermark="Enter your name"
-    AutomationProperties.LabeledBy="{x:Bind NameLabel}"
-    AutomationProperties.Name="Name Input Field" />
+<syncfusion:SfMaskedTextBox
+    x:Name="maskedInput"
+    MaskType="Simple"
+    Mask="(000) 000-0000"
+    AutomationProperties.LabeledBy="{x:Bind PhoneLabel}"
+    AutomationProperties.Name="Phone Number Input Field" />
 ```
 
 ### High Contrast Mode
@@ -71,9 +73,9 @@ All components support keyboard navigation:
 
 ```xml
 <!-- Tab order -->
-<syncfusion:SfButton x:Name="button1" TabIndex="0" />
-<syncfusion:SfTextBox x:Name="input1" TabIndex="1" />
-<syncfusion:SfButton x:Name="button2" TabIndex="2" />
+<editors:SfComboBox x:Name="comboBox1" TabIndex="0" />
+<syncfusion:SfMaskedTextBox x:Name="input1" TabIndex="1" />
+<editors:SfComboBox x:Name="comboBox2" TabIndex="2" />
 ```
 
 ### Focus Indicators
@@ -83,8 +85,9 @@ All components support keyboard navigation:
 // No additional styling needed
 // But can be customized if needed:
 
-<syncfusion:SfButton 
-    Content="Click Me"
+<editors:SfComboBox 
+    x:Name="comboBox"
+    Width="250"
     FocusVisualPrimaryThickness="2"
     FocusVisualSecondaryThickness="1" />
 ```
@@ -105,10 +108,10 @@ All components support keyboard navigation:
 
 ```xml
 <!-- Normal size -->
-<syncfusion:SfButton Content="Normal" Height="40" Padding="16,8" />
+<editors:SfComboBox x:Name="comboBoxNormal" Width="250" Height="40" Padding="16,8" PlaceholderText="Normal" />
 
 <!-- Compact size -->
-<syncfusion:SfButton Content="Compact" Height="32" Padding="12,4" />
+<editors:SfComboBox x:Name="comboBoxCompact" Width="250" Height="32" Padding="12,4" PlaceholderText="Compact" />
 ```
 
 **Method 2: Global Compact Mode**

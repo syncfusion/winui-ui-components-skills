@@ -481,7 +481,7 @@ public sealed partial class MainWindow : Window
         // Test 2: Component creation
         try
         {
-            var button = new Syncfusion.UI.Xaml.Controls.SfButton();
+            var comboBox = new Syncfusion.UI.Xaml.Editors.SfComboBox();
             System.Diagnostics.Debug.WriteLine("✓ Component OK");
         }
         catch (Exception ex)

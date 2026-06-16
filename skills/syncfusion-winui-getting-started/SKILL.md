@@ -68,11 +68,9 @@ Each phase builds on the previous, and skipping any step can cause downstream is
 
 ### Theming
 📄 **Read:** [references/theming.md](references/theming.md)
-- Available themes (Fluent, Material, WinUI)
+- Available themes (Light, Dark)
 - Setting and switching themes
 - System theme detection
-- Custom theme creation
-- Theme persistence
 
 ### Localization and Language Support
 📄 **Read:** [references/localization.md](references/localization.md)
@@ -128,9 +126,15 @@ public partial class App : Application
 
 // 2. Add namespaces in XAML
 xmlns:syncfusion="using:Syncfusion.UI.Xaml.Controls"
+xmlns:editors="using:Syncfusion.UI.Xaml.Editors"
 
 // 3. Use components
-<syncfusion:SfButton Content="Click Me" />
+<editors:SfComboBox x:Name="comboBox"
+                    Width="250"
+                    PlaceholderText="Select an item"
+                    ItemsSource="{Binding Items}"
+                    DisplayMemberPath="Name"
+                    TextMemberPath="Name" />
 ```
 
 ---

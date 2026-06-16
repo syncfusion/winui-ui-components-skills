@@ -152,7 +152,8 @@ In your XAML file (MainWindow.xaml, UserControl, etc.):
 <Window x:Class="YourApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:syncfusion="using:Syncfusion.UI.Xaml.Controls">
+        xmlns:syncfusion="using:Syncfusion.UI.Xaml.Controls"
+        xmlns:editors="using:Syncfusion.UI.Xaml.Editors">
     <!-- Your content -->
 </Window>
 ```
@@ -160,17 +161,24 @@ In your XAML file (MainWindow.xaml, UserControl, etc.):
 ### Step 2: Use Syncfusion Components
 
 ```xml
-<!-- Example: Button -->
-<syncfusion:SfButton Content="Click Me" />
+<!-- Example: ComboBox -->
+<editors:SfComboBox x:Name="comboBox"
+                    Width="250"
+                    PlaceholderText="Select a social media"
+                    ItemsSource="{Binding SocialMedias}"
+                    DisplayMemberPath="Name"
+                    TextMemberPath="Name" />
 
 <!-- Example: DatePicker -->
 <syncfusion:SfDatePicker SelectedDate="2026-03-21" />
 
-<!-- Example: TextBox with properties -->
-<syncfusion:SfTextBox 
-    x:Name="inputBox"
-    Watermark="Enter text"
-    ShowClearButton="True" />
+<!-- Example: MaskedTextBox -->
+<syncfusion:SfMaskedTextBox 
+    x:Name="maskedTextBox"
+    Width="200"
+    MaskType="Simple"
+    Mask="(000) 000-0000"
+    PromptChar="#" />
 ```
 
 ### Step 3: Compile and Run
@@ -272,11 +280,14 @@ Create simple test:
 <Window x:Class="TestApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:syncfusion="using:Syncfusion.UI.Xaml.Controls">
+        xmlns:syncfusion="using:Syncfusion.UI.Xaml.Controls"
+        xmlns:editors="using:Syncfusion.UI.Xaml.Editors">
     <Grid>
-        <syncfusion:SfButton Content="Test Button" 
-                           HorizontalAlignment="Center" 
-                           VerticalAlignment="Center"/>
+        <editors:SfComboBox x:Name="testComboBox" 
+                          Width="250"
+                          PlaceholderText="Select an item"
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Center"/>
     </Grid>
 </Window>
 ```

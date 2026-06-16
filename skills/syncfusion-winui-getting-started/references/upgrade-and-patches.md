@@ -124,7 +124,7 @@ Syncfusion.WinUI    22.1.36    YourProject
 
 **Method 3: Code**
 ```csharp
-var assembly = typeof(Syncfusion.UI.Xaml.Controls.SfButton).Assembly;
+var assembly = typeof(Syncfusion.UI.Xaml.Editors.SfComboBox).Assembly;
 var version = assembly.GetName().Version;
 Console.WriteLine($"Syncfusion Version: {version}");
 ```
@@ -435,7 +435,7 @@ const int REQUIRED_MAJOR_VERSION = 22;
 const int MINIMUM_MINOR_VERSION = 1;
 
 // Verify at runtime
-var assembly = typeof(Syncfusion.UI.Xaml.Controls.SfButton).Assembly;
+var assembly = typeof(Syncfusion.UI.Xaml.Editors.SfComboBox).Assembly;
 var version = assembly.GetName().Version;
 
 if (version.Major < REQUIRED_MAJOR_VERSION ||
