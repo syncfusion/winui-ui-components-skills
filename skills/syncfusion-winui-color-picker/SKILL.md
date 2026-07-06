@@ -3,7 +3,7 @@ name: syncfusion-winui-color-picker
 description: Guide implementation of the Syncfusion SfColorPicker control in WinUI applications. Use this skill when implementing color picker UI, solid color selection with RGB/HSV/HSL/CMYK models, or gradient brushes (linear and radial). Covers color spectrum customization, opacity control, brush mode switching, and color value management in WinUI/WinUI 3 projects.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Color Picker (SfColorPicker)

@@ -3,7 +3,7 @@ name: syncfusion-winui-masked-textbox
 description: Guide for implementing Syncfusion WinUI MaskedTextBox (SfMaskedTextBox) for validated text input with customizable mask patterns. Use this when implementing masked input fields, formatted data entry (phone numbers, dates, SSN, IP addresses), or restricting text input to specific patterns in WinUI applications. This skill covers mask configuration, prompt characters, and error indication.
 metadata:
  author: "Syncfusion Inc"
- version: "33.1.44"
+ version: "34.1.29"
 ---
 
 # Implementing MaskedTextBox

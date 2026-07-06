@@ -3,7 +3,7 @@ name: syncfusion-winui-scheduler
 description: Implements Syncfusion WinUI Scheduler (SfScheduler) control for appointment and calendar management in desktop applications. Use this when building scheduler views, appointment booking systems, or resource scheduling in WinUI. This skill covers view types (Day, Week, Month, Timeline), appointment management, recurrence patterns, and drag-and-drop interactions.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Scheduler (SfScheduler)

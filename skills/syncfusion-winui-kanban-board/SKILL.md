@@ -3,7 +3,7 @@ name: syncfusion-winui-kanban-board
 description: Implements Syncfusion WinUI Kanban (SfKanban) control for workflow visualization and task management. Use this when building Kanban boards, agile project tracking, or workflow management systems in WinUI applications. This skill covers cards, columns, swim lanes, WIP limits, drag-and-drop, workflows, sorting, events, and customization.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Kanban (SfKanban)

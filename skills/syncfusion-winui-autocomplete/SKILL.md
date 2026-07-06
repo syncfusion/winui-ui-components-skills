@@ -3,7 +3,7 @@ name: syncfusion-winui-autocomplete
 description: Guide implementation of the Syncfusion WinUI AutoComplete control (SfAutoComplete)  for creating searchable dropdowns with single or multiple selection, filtering  suggestions, and customizable token display. Use this skill when implementing search-as-you-type functionality, autocomplete dropdowns with multi-select, tagging systems with token/chip display, or filtered suggestion boxes in WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing AutoComplete (SfAutoComplete)

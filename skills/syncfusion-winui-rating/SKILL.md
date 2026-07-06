@@ -3,7 +3,7 @@ name: syncfusion-winui-rating
 description: Guide for implementing the Syncfusion WinUI Rating (SfRating) control to collect user ratings and feedback on a numeric scale. Use this when implementing star ratings, user reviews, or feedback collection in WinUI 3. This skill covers precision modes (full, half, exact), custom templates, tooltips, and read-only rating display.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Rating Control (SfRating)

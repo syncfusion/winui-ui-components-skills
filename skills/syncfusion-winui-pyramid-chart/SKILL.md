@@ -3,7 +3,7 @@ name: syncfusion-winui-pyramid-chart
 description: Implement Syncfusion WinUI Pyramid Charts (SfPyramidChart) for visualizing hierarchical proportional data. Use this when working with pyramid charts, hierarchical visualization, or proportional data display in WinUI applications. This skill covers data binding, legend configuration, exploding segments, tooltips, data labels, selection interactions, and custom styling with palettes and gradients.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Pyramid Charts

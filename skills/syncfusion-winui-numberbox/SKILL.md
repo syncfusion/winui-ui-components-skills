@@ -3,7 +3,7 @@ name: syncfusion-winui-numberbox
 description: Learn to implement Syncfusion WinUI NumberBox (SfNumberBox) control for numeric input with validation, custom formatting, and value restrictions. Use this skill when you need numeric input fields with currency, percentage, or decimal formatting in WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI NumberBox

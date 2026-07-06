@@ -3,7 +3,7 @@ name: syncfusion-winui-range-slider
 description: Implements Syncfusion WinUI RangeSlider (SfRangeSlider) control for range selection in desktop applications. Use this when working with range selectors, dual-thumb sliders, or numeric range selection interfaces. This skill covers configuration, labels, ticks, dividers, track customization, thumb styling, tooltips, and value handling for interactive range selection in WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI RangeSlider (SfRangeSlider)

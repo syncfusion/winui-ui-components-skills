@@ -3,7 +3,7 @@ name: syncfusion-winui-shimmer
 description: Guide for implementing the Syncfusion WinUI Shimmer control to display loading placeholders and skeleton screens. Use this skill when implementing shimmer effects, skeleton screens, content loading animations, or loading placeholders during data fetching in WinUI applications. Essential for enhancing perceived performance during async operations, list loading, profile loading, article loading, or any content loading scenario requiring visual feedback.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI Shimmer

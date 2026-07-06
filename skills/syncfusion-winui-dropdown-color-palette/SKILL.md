@@ -3,7 +3,7 @@ name: syncfusion-winui-dropdown-color-palette
 description: Guide implementation of the Syncfusion WinUI DropDown Color Palette control for color selection in Windows desktop applications. Use this skill when implementing color selection dropdowns, theme color support, custom color palettes, split-mode buttons, or the More Colors dialog. Covers dropdown customization, palette structure, and color-based UI interactions.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI DropDown Color Palette

@@ -3,7 +3,7 @@ name: syncfusion-winui-time-picker
 description: Implements Syncfusion WinUI TimePicker (SfTimePicker) control for time input and selection in desktop applications. Use this when building time input controls, time selection interfaces, or dropdown time spinners. This skill covers time restrictions, time formatting, dropdown spinner customization, and time selection for scheduling and appointment scenarios in WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # WinUI TimePicker (SfTimePicker) Implementation Guide

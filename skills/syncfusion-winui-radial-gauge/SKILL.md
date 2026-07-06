@@ -3,7 +3,7 @@ name: syncfusion-winui-radial-gauge
 description: Implement Syncfusion WinUI Radial Gauge (SfRadialGauge) component for circular data visualization in desktop applications. Use this when working with radial gauges, speedometers, temperature monitors, or dashboard meters. This skill covers axis configuration, multiple pointer types (needle, shape, content, range), ranges with gradients, annotations, animations, and interactive dragging for WinUI/.NET desktop applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Radial Gauge

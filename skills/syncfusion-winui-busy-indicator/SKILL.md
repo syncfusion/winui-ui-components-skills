@@ -3,7 +3,7 @@ name: syncfusion-winui-busy-indicator
 description: Guide for implementing the Syncfusion WinUI BusyIndicator control to display loading indicators and progress status. Use this skill when implementing loading indicators, showing progress status, indicating background operations, or creating waiting screens in WinUI applications. Essential for async data loading, file operations, API calls, and any scenario requiring user notification during processing tasks.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI BusyIndicator

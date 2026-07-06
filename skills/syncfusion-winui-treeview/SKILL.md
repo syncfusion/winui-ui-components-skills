@@ -3,7 +3,7 @@ name: syncfusion-winui-treeview
 description: Comprehensive guide for implementing Syncfusion WinUI TreeView (SfTreeView) control in desktop applications. Use this skill when working with hierarchical data display, tree structures, or node-based navigation. Covers TreeView implementation for file explorers, organization charts, category browsers, and expandable/collapsible data visualization in WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI TreeView

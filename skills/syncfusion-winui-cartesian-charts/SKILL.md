@@ -3,7 +3,7 @@ name: syncfusion-winui-cartesian-charts
 description: Implements Syncfusion WinUI Cartesian Charts (SfCartesianChart) for data visualization in WinUI applications. Use this when working with column, line, bar, area, or financial charts (OHLC, Candle). This skill covers axis configuration, legends, tooltips, zooming/panning, data labels, and high-performance fast series for large datasets.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Cartesian Charts

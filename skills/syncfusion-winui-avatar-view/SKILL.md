@@ -3,7 +3,7 @@ name: syncfusion-winui-avatar-view
 description: Guide for implementing the Syncfusion WinUI AvatarView control to display user avatars and profile pictures. Use this when implementing user profiles, contact lists, or chat interfaces requiring visual user representation in WinUI applications. This skill covers initials display, image avatars, group avatars, and pre-defined avatar characters.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI AvatarView

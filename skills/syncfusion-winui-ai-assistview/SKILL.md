@@ -3,7 +3,7 @@ name: syncfusion-winui-ai-assistview
 description: Guide for implementing the Syncfusion WinUI AI AssistView control for creating AI chat interfaces and conversational UI. Use this skill when implementing AI chat interfaces, AI assistants, conversational UI, or chatbots in WinUI applications. Essential for creating AI-powered chat experiences, integrating AI services, displaying AI responses, showing typing indicators, providing AI suggestions, or implementing conversational interfaces with AI services in WinUI.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI AI AssistView

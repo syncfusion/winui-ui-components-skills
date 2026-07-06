@@ -3,7 +3,7 @@ name: syncfusion-winui-linear-gauge
 description: Implements Syncfusion WinUI Linear Gauge (SfLinearGauge) control for data visualization in desktop applications. Use this when building progress indicators, temperature displays, or data measurement gauges in WinUI. This skill covers axis configuration, pointer types (bar and shape), range customization, and animation.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # WinUI Linear Gauge (SfLinearGauge)

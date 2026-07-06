@@ -3,7 +3,7 @@ name: syncfusion-winui-treegrid
 description: Guide for implementing Syncfusion WinUI TreeGrid (SfTreeGrid) components for displaying hierarchical or self-relational data. Use this skill when working with tree-structured grids, parent-child data relationships, or expandable grid rows. Covers TreeGrid features for organizational charts, file system displays, and multi-level data representation in WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI TreeGrid

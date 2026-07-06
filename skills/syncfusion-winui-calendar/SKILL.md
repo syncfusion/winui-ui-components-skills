@@ -3,7 +3,7 @@ name: syncfusion-winui-calendar
 description: Implements Syncfusion WinUI Calendar (SfCalendar) control for date selection in desktop applications. Use this when building date pickers, date selection interfaces (single, multiple, or range), month/year navigation, or calendar views. This skill covers calendar configuration, date restrictions, blackout dates, week numbers, localization, and customization for Windows desktop applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # WinUI Calendar (SfCalendar)

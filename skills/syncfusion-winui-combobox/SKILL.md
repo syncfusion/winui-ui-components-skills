@@ -3,7 +3,7 @@ name: syncfusion-winui-combobox
 description: Guide for implementing the Syncfusion WinUI ComboBox control (SfComboBox) for single and multiple selection with filtering and token display. Use this when working with searchable dropdowns, multi-select combo boxes, or editable combo boxes in WinUI applications. This skill covers selection modes, data binding, filtering, grouping, and custom item templates.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing ComboBoxes (Syncfusion WinUI)

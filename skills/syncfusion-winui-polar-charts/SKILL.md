@@ -3,7 +3,7 @@ name: syncfusion-winui-polar-charts
 description: Implementation guide for Syncfusion WinUI Polar Chart (SfPolarChart) control. Use this when working with polar charts, radar charts, or spider charts for radial data visualization in WinUI applications. This skill covers line and area series for visualizing data in terms of values and angles, multi-dimensional data comparison, and directional data visualization with PolarLineSeries and PolarAreaSeries.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Polar Charts in WinUI

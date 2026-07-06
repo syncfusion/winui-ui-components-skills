@@ -3,7 +3,7 @@ name: syncfusion-winui-dropdown-color-picker
 description: Guide for implementing Syncfusion WinUI DropDown Color Picker control for interactive color selection with dropdown functionality. Use this skill when implementing color selection with dropdown, color editing modes (RGB/HSV/HSL/CMYK/Hex), customizable dropdown placement, split button modes, or color picker flyout customization in WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI DropDown Color Picker

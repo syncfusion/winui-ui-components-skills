@@ -3,7 +3,7 @@ name: syncfusion-winui-calendar-date-picker
 description: Implements Syncfusion WinUI Calendar Date Picker (SfCalendarDatePicker) control for date selection with calendar dropdown. Use this when building calendar date pickers, date input controls, or dropdown calendar interfaces in WinUI desktop applications. This skill covers date restrictions, blackout dates, calendar localization, week numbers, and customization.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Syncfusion WinUI Calendar Date Picker

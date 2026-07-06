@@ -3,7 +3,7 @@ name: syncfusion-winui-segmented-control
 description: Guide for implementing the Syncfusion WinUI Segmented Control for creating mutually exclusive option selectors. Use this skill when implementing segmented controls, segment pickers, tab selectors, or mutually exclusive option selectors in WinUI applications. Essential for segment-based navigation, filter toggles, view switchers, button groups with single selection, or any scenario requiring mutually exclusive selection from 2+ options in WinUI.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI Segmented Control

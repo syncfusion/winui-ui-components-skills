@@ -3,7 +3,7 @@ name: syncfusion-winui-getting-started
 description: Comprehensive guide for setting up Syncfusion WinUI components, including license registration, NuGet package installation, system requirements verification, and troubleshooting. Use this skill when users need help with Syncfusion licensing, installation, WinUI component configuration, theme setup, or resolving installation errors.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Setup and Licensing

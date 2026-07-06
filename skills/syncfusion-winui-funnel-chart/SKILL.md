@@ -3,7 +3,7 @@ name: syncfusion-winui-funnel-chart
 description: Implement Syncfusion WinUI Funnel Chart (SfFunnelChart) for visualizing data across stages in a process or workflow. Use this when working with funnel charts, conversion funnels, sales pipelines, or process stage analysis in WinUI applications. This skill covers stage-based metrics, hierarchical data representation with decreasing values, and visual representation of progressive reduction in data values across sequential stages.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Funnel Charts

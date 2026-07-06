@@ -3,7 +3,7 @@ name: syncfusion-winui-calendar-date-range-picker
 description: Implements Syncfusion WinUI CalendarDateRangePicker (SfCalendarDateRangePicker) control for selecting date ranges in desktop applications. Use this when building date range pickers, range selection calendars, or start/end date input interfaces. This skill covers range selection, preset ranges, blackout dates, date restrictions, week numbers, localization, and calendar customization for WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Calendar DateRange Picker

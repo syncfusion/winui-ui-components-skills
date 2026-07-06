@@ -3,7 +3,7 @@ name: syncfusion-winui-slider
 description: Implements Syncfusion WinUI Slider (SfSlider) control for numeric value selection in desktop applications. Use this when working with sliders, range selectors, value pickers, or interactive range controls. This skill covers slider configuration, ticks, labels, tooltips, value selection, and customization for WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Slider

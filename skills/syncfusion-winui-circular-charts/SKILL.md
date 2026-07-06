@@ -3,7 +3,7 @@ name: syncfusion-winui-circular-charts
 description: Implement Syncfusion WinUI Circular Charts (SfCircularChart) with pie and doughnut visualizations for proportional data display. Use this when working with circular charts, pie charts, or doughnut charts in WinUI applications. This skill covers chart series configuration, data labels, legends, tooltips, segment selection, exploding segments, and visual customization for interactive circular visualizations.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Syncfusion WinUI Circular Charts

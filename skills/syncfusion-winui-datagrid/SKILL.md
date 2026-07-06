@@ -3,7 +3,7 @@ name: syncfusion-winui-datagrid
 description: Guide for implementing Syncfusion WinUI DataGrid (SfDataGrid) for tabular data display in desktop applications. Use this skill when working with data grids, sorting, filtering, grouping, or CRUD operations. Covers data binding, column configuration, master-details views, Excel export, and performance optimization including data virtualization and custom templates.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing WinUI DataGrid (SfDataGrid)

@@ -3,7 +3,7 @@ name: syncfusion-winui-barcode
 description: Implement Syncfusion WinUI Barcode (SfBarcode) control to generate and display machine-readable barcodes in desktop applications. Use this when working with barcodes, QR codes, or product labeling systems. This skill covers symbology types (DataMatrix, Code39, Code128, Codabar, UPC), barcode customization, text alignment, rotation, and visual encoding for WinUI applications.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Barcodes (SfBarcode)

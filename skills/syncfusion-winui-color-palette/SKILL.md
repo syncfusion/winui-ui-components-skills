@@ -3,7 +3,7 @@ name: syncfusion-winui-color-palette
 description: Guide implementation of the Syncfusion WinUI Color Palette control (SfColorPalette) for swatch-based color selection in Windows desktop applications. Use this skill when working with theme colors, standard colors, custom color palettes, or the More Colors dialog. Covers color palette setup, theme color support, standard color configurations, UI customization, and best practices.
 metadata:
    author: "Syncfusion Inc"
-   version: "33.1.44"
+   version: "34.1.29"
 ---
 
 ## When to Use This Skill

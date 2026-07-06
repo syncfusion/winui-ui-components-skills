@@ -3,7 +3,7 @@ name: syncfusion-winui-badge
 description: Guide implementation of the Syncfusion WinUI Badge control (SfBadge) for displaying notification badges and status indicators. Use this skill when working with badge notifications, unread count badges, BadgeContainer, or notification overlays in WinUI applications. Covers shapes, colors, positioning, alignment, animations, and customization patterns.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Implementing Badges in WinUI
